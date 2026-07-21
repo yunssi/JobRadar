@@ -16,7 +16,7 @@
   {"id":"kdb-biz","name":"산은비즈","priority":15,"home":"https://www.kdbbiz.co.kr/","urls":["https://www.kdbbiz.co.kr/"]},
   {"id":"ibk-service","name":"IBK서비스","priority":16,"home":"https://www.ibkservice.co.kr/","urls":["https://www.ibkservice.co.kr/recruit/notice/list"]},
   {"id":"kohom","name":"주택관리공단","priority":17,"home":"https://www.kohom.or.kr/","urls":["https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&page=1&schCon=0"]},
-  {"id":"ex-service","name":"한국도로공사서비스","priority":18,"home":"https://www.exservice.co.kr/","urls":["https://www.exservice.co.kr/boad/bd_recruit/egolist.php?bd=1"]},
+  {"id":"ex-service","name":"한국도로공사서비스","priority":18,"home":"https://www.exservice.co.kr/","urls":["https://www.exservice.co.kr/boad/bd_recruit/egolist.php?bd=1"],"tls_ca_file":"certificates/sectigo-rsa-domain-validation-secure-server-ca.pem"},
   {"id":"kto-partners","name":"KTO파트너스","priority":19,"home":"http://www.ktopartners.com/","urls":["http://www.ktopartners.com/"]},
   {"id":"gkl-with","name":"GKLWITH","priority":20,"home":"https://www.gklwith.co.kr/","urls":["https://www.gklwith.co.kr/"]}
 ]

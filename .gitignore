@@ -21,6 +21,7 @@
 # misc
 .DS_Store
 *.pem
+!certificates/sectigo-rsa-domain-validation-secure-server-ca.pem
 
 # debug
 npm-debug.log*

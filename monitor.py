@@ -21,7 +21,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import Any, TypedDict
+from typing import Any, NotRequired, TypedDict
 from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
@@ -207,6 +207,7 @@ class SourceConfig(TypedDict):
     priority: int
     home: str
     urls: list[str]
+    tls_ca_file: NotRequired[str]
 
 
 class JobRecord(TypedDict, total=False):
@@ -287,9 +288,11 @@ def decode_body(raw: bytes, declared: str | None = None) -> str:
     return raw.decode("utf-8", errors="replace")
 
 
-def fetch(url: str, timeout: int = 25, retries: int = 2) -> str:
+def fetch(url: str, timeout: int = 25, retries: int = 2, extra_ca_file: Path | None = None) -> str:
     last_error: Exception | None = None
     context = ssl.create_default_context()
+    if extra_ca_file is not None:
+        context.load_verify_locations(cafile=str(extra_ca_file))
     for attempt in range(retries + 1):
         try:
             request = Request(
@@ -400,10 +403,11 @@ def collect_source(source: SourceConfig) -> CollectionResult:
     pages: list[tuple[str, str]] = []
     errors: list[str] = []
     visited: set[str] = set()
+    extra_ca_file = ROOT / source["tls_ca_file"] if "tls_ca_file" in source else None
 
     for configured_url in source["urls"]:
         try:
-            document = fetch(configured_url)
+            document = fetch(configured_url, extra_ca_file=extra_ca_file)
             pages.append((configured_url, document))
             visited.add(normalize_url(configured_url))
         except RuntimeError as exc:
@@ -426,7 +430,7 @@ def collect_source(source: SourceConfig) -> CollectionResult:
 
     for target in discovered:
         try:
-            pages.append((target, fetch(target)))
+            pages.append((target, fetch(target, extra_ca_file=extra_ca_file)))
             visited.add(target)
         except RuntimeError as exc:
             errors.append(f"{target}: {exc}")
@@ -496,6 +500,27 @@ def validate_url(value: Any, field: str) -> str:
     return value
 
 
+def validate_tls_ca_file(value: Any, source_id: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ConfigurationError(f"{source_id}.tls_ca_file must be a non-empty relative path")
+    relative = Path(value)
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ConfigurationError(f"{source_id}.tls_ca_file must stay inside the repository")
+    resolved = (ROOT / relative).resolve()
+    try:
+        resolved.relative_to(ROOT)
+    except ValueError as exc:
+        raise ConfigurationError(f"{source_id}.tls_ca_file must stay inside the repository") from exc
+    if not resolved.is_file():
+        raise ConfigurationError(f"{source_id}.tls_ca_file does not exist: {relative.as_posix()}")
+    try:
+        context = ssl.create_default_context()
+        context.load_verify_locations(cafile=str(resolved))
+    except (OSError, ssl.SSLError) as exc:
+        raise ConfigurationError(f"{source_id}.tls_ca_file is not a valid CA certificate") from exc
+    return relative.as_posix()
+
+
 def load_sources(path: Path | None = None) -> list[SourceConfig]:
     path = path or SOURCES_FILE
     raw = load_json(path, [])
@@ -527,15 +552,18 @@ def load_sources(path: Path | None = None) -> list[SourceConfig]:
         if not isinstance(urls, list) or not urls:
             raise ConfigurationError(f"Source {source_id} must define at least one URL")
         validated_urls = [validate_url(url, f"{source_id}.urls") for url in urls]
-        sources.append(
-            {
-                "id": source_id,
-                "name": name.strip(),
-                "priority": priority,
-                "home": validate_url(item.get("home"), f"{source_id}.home"),
-                "urls": validated_urls,
-            }
-        )
+        source: SourceConfig = {
+            "id": source_id,
+            "name": name.strip(),
+            "priority": priority,
+            "home": validate_url(item.get("home"), f"{source_id}.home"),
+            "urls": validated_urls,
+        }
+        if "tls_ca_file" in item:
+            if any(urlsplit(url).scheme != "https" for url in validated_urls):
+                raise ConfigurationError(f"{source_id}.tls_ca_file can only be used with HTTPS URLs")
+            source["tls_ca_file"] = validate_tls_ca_file(item["tls_ca_file"], source_id)
+        sources.append(source)
         seen_ids.add(source_id)
         seen_priorities.add(priority)
 
@@ -674,9 +702,7 @@ def reconcile_state(state: dict[str, Any], sources: list[SourceConfig]) -> tuple
 
     state["known"] = normalized_known
     state["source_status"] = {
-        source_id: status
-        for source_id, status in state["source_status"].items()
-        if source_id in allowed_ids
+        source_id: status for source_id, status in state["source_status"].items() if source_id in allowed_ids
     }
     return removed, merged
 

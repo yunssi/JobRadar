@@ -1,6 +1,8 @@
+import hashlib
 import io
 import json
 import os
+import ssl
 import tempfile
 import unittest
 from email.message import Message
@@ -108,6 +110,26 @@ class MonitorConfigurationTests(unittest.TestCase):
             monitor.write_json(path, make_sources())
             self.assertEqual([source["priority"] for source in monitor.load_sources(path)], list(range(1, 21)))
 
+    def test_bundled_sectigo_intermediate_has_expected_fingerprint(self) -> None:
+        path = monitor.ROOT / "certificates" / "sectigo-rsa-domain-validation-secure-server-ca.pem"
+        der = ssl.PEM_cert_to_DER_cert(path.read_text(encoding="ascii"))
+        self.assertEqual(
+            hashlib.sha256(der).hexdigest(),
+            "7fa4ff68ec04a99d7528d5085f94907f4d1dd1c5381bacdc832ed5c960214676",
+        )
+
+    def test_load_sources_accepts_repo_local_ca_for_https_source(self) -> None:
+        sources = make_sources()
+        sources[0]["tls_ca_file"] = "certificates/sectigo-rsa-domain-validation-secure-server-ca.pem"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sources.json"
+            monitor.write_json(path, sources)
+            loaded = monitor.load_sources(path)
+        self.assertEqual(
+            loaded[0]["tls_ca_file"],
+            "certificates/sectigo-rsa-domain-validation-secure-server-ca.pem",
+        )
+
     def test_load_sources_rejects_invalid_count_duplicate_and_url(self) -> None:
         cases: list[tuple[str, list[monitor.SourceConfig]]] = []
         too_few = make_sources()[:-1]
@@ -121,6 +143,14 @@ class MonitorConfigurationTests(unittest.TestCase):
         invalid_url[0]["urls"] = ["javascript:alert(1)"]
         cases.append(("URL", invalid_url))
 
+        missing_ca = make_sources()
+        missing_ca[0]["tls_ca_file"] = "certificates/missing.pem"
+        cases.append(("missing CA", missing_ca))
+
+        escaped_ca = make_sources()
+        escaped_ca[0]["tls_ca_file"] = "../outside.pem"
+        cases.append(("escaped CA", escaped_ca))
+
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "sources.json"
             for label, value in cases:
@@ -128,6 +158,37 @@ class MonitorConfigurationTests(unittest.TestCase):
                     monitor.write_json(path, value)
                     with self.assertRaises(monitor.ConfigurationError):
                         monitor.load_sources(path)
+
+    def test_fetch_adds_ca_to_default_verified_context(self) -> None:
+        ca_file = monitor.ROOT / "certificates" / "sectigo-rsa-domain-validation-secure-server-ca.pem"
+        context = mock.MagicMock()
+        response = mock.MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = "정상 응답".encode()
+        response.headers.get_content_charset.return_value = "utf-8"
+
+        with (
+            mock.patch("monitor.ssl.create_default_context", return_value=context),
+            mock.patch("monitor.urlopen", return_value=response) as opener,
+        ):
+            self.assertEqual(
+                monitor.fetch("https://example.com/recruit", retries=0, extra_ca_file=ca_file),
+                "정상 응답",
+            )
+
+        context.load_verify_locations.assert_called_once_with(cafile=str(ca_file))
+        self.assertIs(opener.call_args.kwargs["context"], context)
+
+    def test_collect_source_uses_extra_ca_only_for_configured_source(self) -> None:
+        source = make_sources()[0]
+        source["tls_ca_file"] = "certificates/sectigo-rsa-domain-validation-secure-server-ca.pem"
+        with mock.patch("monitor.fetch", return_value="<html><body>채용정보</body></html>") as fetcher:
+            monitor.collect_source(source)
+
+        fetcher.assert_called_once_with(
+            source["urls"][0],
+            extra_ca_file=monitor.ROOT / source["tls_ca_file"],
+        )
 
     def test_malformed_state_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
