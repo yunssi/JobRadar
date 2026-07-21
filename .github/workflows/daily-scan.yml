@@ -1,0 +1,106 @@
+name: Daily Job Scan
+
+on:
+  schedule:
+    # 21:15 UTC = 06:15 KST (next day)
+    - cron: "15 21 * * *"
+  workflow_dispatch:
+    inputs:
+      alert_on_first_run:
+        description: "기준선 생성 중 발견한 공고도 텔레그램으로 알림"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: job-radar-daily
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install locked dependencies
+        run: |
+          uv sync --locked --dev
+          npm ci --ignore-scripts
+
+      - name: Verify Python
+        run: |
+          uv run ruff check .
+          uv run mypy monitor.py tests/test_monitor.py
+          uv run python -m unittest discover -s tests -v
+
+      - name: Verify dashboard code
+        run: |
+          npm run lint
+          npm run typecheck
+          npm test
+
+      - name: Scan official recruitment pages
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.alert_on_first_run }}" = "true" ]; then
+            ARGS="--alert-on-first-run"
+          fi
+          uv run python monitor.py $ARGS
+
+      - name: Save scan state
+        run: |
+          git config user.name "job-radar[bot]"
+          git config user.email "job-radar[bot]@users.noreply.github.com"
+          git add data/state.json public/data/jobs.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update job radar $(date -u +%F)"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Build dashboard artifact
+        run: npm run build
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload dashboard
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy dashboard
+        id: deployment
+        uses: actions/deploy-pages@v4

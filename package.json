@@ -1,0 +1,23 @@
+{
+  "name": "job-radar",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint": "eslint public/*.js scripts/*.mjs tests/js/*.mjs && npm run lint:workflows",
+    "lint:workflows": "node scripts/validate-workflows.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/js/*.test.mjs",
+    "build": "node scripts/build.mjs",
+    "serve": "node scripts/serve.mjs",
+    "verify": "npm run lint && npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "eslint": "9.39.4",
+    "typescript": "5.9.3",
+    "yaml": "2.9.0"
+  }
+}

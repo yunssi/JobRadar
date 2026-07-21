@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="수도권 공공기관 자회사 채용공고 모니터" />
+    <meta name="theme-color" content="#152a24" />
+    <meta name="referrer" content="no-referrer" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+    <title>JobRadar — 수도권 공공 채용 레이더</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="nav" aria-label="주 메뉴">
+        <a class="brand" href="./" aria-label="JobRadar 홈"><span class="brand-mark" aria-hidden="true"></span>JobRadar</a>
+        <a class="source-link" href="#sources">감시 현황</a>
+      </nav>
+      <div class="hero-content">
+        <div>
+          <p class="eyebrow">PUBLIC SERVICE CAREER WATCH</p>
+          <h1>좋은 공고를<br /><em>놓치지 않는</em> 습관.</h1>
+          <p class="hero-copy">수도권 공공기관 자회사 20곳의 채용 게시판을 매일 확인합니다. 새로 발견한 공고와 전환 가능성이 높은 직무를 한곳에서 보세요.</p>
+        </div>
+        <div class="scan-card" aria-live="polite">
+          <span class="pulse" aria-hidden="true"></span>
+          <div><strong id="scan-status">데이터를 불러오는 중</strong><span id="scan-time">잠시만 기다려 주세요</span></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="metrics" aria-label="요약">
+        <article><span>현재 게시판 노출</span><strong id="metric-total">—</strong><small id="metric-total-detail">누적 —건</small></article>
+        <article><span>이번 실행 신규</span><strong id="metric-new">—</strong><small>첫 실행은 기준선 저장</small></article>
+        <article><span>정상 감시</span><strong id="metric-health">—</strong><small id="metric-health-detail">공식 채용 페이지</small></article>
+      </section>
+
+      <section class="jobs-section" aria-labelledby="jobs-title">
+        <div class="section-heading">
+          <div><p class="eyebrow dark">LATEST OPENINGS</p><h2 id="jobs-title">발견된 채용공고</h2></div>
+          <p id="result-count" class="result-count">불러오는 중</p>
+        </div>
+        <div class="controls" role="search">
+          <label class="search-box"><span class="sr-only">공고 검색</span><input id="search" type="search" placeholder="회사명·직무·지역 검색" autocomplete="off" /></label>
+          <label><span class="sr-only">회사 선택</span><select id="company-filter"><option value="">전체 회사</option></select></label>
+          <label class="check-filter"><input id="active-only" type="checkbox" checked /><span>현재 게시판만</span></label>
+          <label class="check-filter"><input id="recommended-only" type="checkbox" /><span>추천 공고만</span></label>
+        </div>
+        <div id="jobs" class="job-list" aria-live="polite"></div>
+        <div id="empty" class="empty" hidden><strong>조건에 맞는 공고가 없습니다.</strong><span>검색어나 필터를 바꿔보세요.</span></div>
+      </section>
+
+      <section id="sources" class="sources-section" aria-labelledby="sources-title">
+        <div class="section-heading">
+          <div><p class="eyebrow dark">SOURCE HEALTH</p><h2 id="sources-title">20개 회사 감시 현황</h2></div>
+          <p>오류가 난 회사가 있어도 나머지 감시는 계속됩니다.</p>
+        </div>
+        <div id="source-grid" class="source-grid"></div>
+      </section>
+    </main>
+
+    <footer><strong>JobRadar</strong><p>공고 내용과 지원 자격은 반드시 회사 공식 원문에서 최종 확인하세요.</p></footer>
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>

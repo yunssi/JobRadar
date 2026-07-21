@@ -1,0 +1,2980 @@
+{
+  "generated_at": "2026-07-20T13:42:15Z",
+  "baseline_ready": true,
+  "stats": {
+    "total": 172,
+    "active_total": 171,
+    "new_today": 0,
+    "healthy_sources": 19,
+    "degraded_sources": 1,
+    "failed_sources": 0,
+    "source_count": 20
+  },
+  "sources": [
+    {
+      "id": "lh-es",
+      "name": "LH E&S",
+      "priority": 1,
+      "home": "https://lhes.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 13,
+      "error": null
+    },
+    {
+      "id": "kepco-fms",
+      "name": "한전FMS",
+      "priority": 2,
+      "home": "https://www.kepcofms.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 9,
+      "error": null
+    },
+    {
+      "id": "kamco-fmc",
+      "name": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "home": "https://kamcofmc.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 15,
+      "error": null
+    },
+    {
+      "id": "kra-fm",
+      "name": "한국마사회시설관리",
+      "priority": 4,
+      "home": "https://krafm.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 0,
+      "error": null
+    },
+    {
+      "id": "clean-metro",
+      "name": "서울메트로환경",
+      "priority": 5,
+      "home": "http://www.cleanmetro.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 1,
+      "error": null
+    },
+    {
+      "id": "smrt-green",
+      "name": "서울도시철도그린환경",
+      "priority": 6,
+      "home": "https://www.smrtg.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 28,
+      "error": null
+    },
+    {
+      "id": "smrt-engineering",
+      "name": "서울도시철도엔지니어링",
+      "priority": 7,
+      "home": "https://www.smrte.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 5,
+      "error": null
+    },
+    {
+      "id": "kac-service",
+      "name": "KAC공항서비스",
+      "priority": 8,
+      "home": "https://www.kacas.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 5,
+      "error": null
+    },
+    {
+      "id": "airport-os",
+      "name": "인천공항운영서비스",
+      "priority": 9,
+      "home": "https://www.airportos.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 9,
+      "error": null
+    },
+    {
+      "id": "airport-fc",
+      "name": "인천공항시설관리",
+      "priority": 10,
+      "home": "https://www.airportfc.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 10,
+      "error": null
+    },
+    {
+      "id": "airport-security",
+      "name": "인천국제공항보안",
+      "priority": 11,
+      "home": "https://airportsc.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 11,
+      "error": null
+    },
+    {
+      "id": "korea-airport-security",
+      "name": "한국공항보안",
+      "priority": 12,
+      "home": "https://airsecure.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 7,
+      "error": null
+    },
+    {
+      "id": "korail-tech",
+      "name": "코레일테크",
+      "priority": 13,
+      "home": "https://www.korailtech.com/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 6,
+      "error": null
+    },
+    {
+      "id": "korail-networks",
+      "name": "코레일네트웍스",
+      "priority": 14,
+      "home": "https://www.korailnetworks.com/",
+      "ok": true,
+      "health": "degraded",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 0,
+      "error": "Recruitment markers were not found in fetched pages"
+    },
+    {
+      "id": "kdb-biz",
+      "name": "산은비즈",
+      "priority": 15,
+      "home": "https://www.kdbbiz.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 0,
+      "error": null
+    },
+    {
+      "id": "ibk-service",
+      "name": "IBK서비스",
+      "priority": 16,
+      "home": "https://www.ibkservice.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 10,
+      "error": null
+    },
+    {
+      "id": "kohom",
+      "name": "주택관리공단",
+      "priority": 17,
+      "home": "https://www.kohom.or.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 20,
+      "error": null
+    },
+    {
+      "id": "ex-service",
+      "name": "한국도로공사서비스",
+      "priority": 18,
+      "home": "https://www.exservice.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 8,
+      "error": null
+    },
+    {
+      "id": "kto-partners",
+      "name": "KTO파트너스",
+      "priority": 19,
+      "home": "http://www.ktopartners.com/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 14,
+      "error": null
+    },
+    {
+      "id": "gkl-with",
+      "name": "GKLWITH",
+      "priority": 20,
+      "home": "https://www.gklwith.co.kr/",
+      "ok": true,
+      "health": "healthy",
+      "last_checked": "2026-07-20T13:42:15Z",
+      "last_success": "2026-07-20T13:42:15Z",
+      "found": 0,
+      "error": null
+    }
+  ],
+  "jobs": [
+    {
+      "id": "e4f9e493f8d62c89c00ea46b",
+      "source_id": "kepco-fms",
+      "company": "한전FMS",
+      "priority": 2,
+      "title": "(서울) 서울지사 보건관리자 계약직 채용",
+      "url": "https://www.kepcofms.co.kr/?command=view&contentId=43ec517d68b6edd3015b3edc9a11367b&wr_id=825",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "ff9535a5ddfb163b653956bc",
+      "source_id": "clean-metro",
+      "company": "서울메트로환경",
+      "priority": 5,
+      "title": "[공고 제2026-12호]2026년 상반기 공개채용 사무직(육아휴직 대체… 2026.03.23",
+      "url": "http://www.cleanmetro.co.kr/bbs/board.php?bo_table=recruit&wr_id=421",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "bc3fbbafedd8482a8c5a5882",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "정규직 채용) 오시아노관광단지 시설관리원 영선분야",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=287",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "a94775cb450fe9f235623e0a",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "정규직 채용) 서울지역센터 장애인 전용 채용(미화, 보안, 주차관리 분야)",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=286",
+      "score": 7,
+      "tags": [
+        "수도권",
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "9be8ce1be2a30bf03f3912fe",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "정규직 채용) 중문골프장지역센터 코스관리직(장비운용)",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=283",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "7f7597ed11ac509a6a62fb65",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "정규직 채용) 관광안내부 의료관광비지니스팀 러시아어",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=278",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "be2d0342702a95a2c37d0706",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "마감_기간제 채용) 중문관광단지센터 조경직 성수기 기간제 채용",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=277",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "fd02ee0a370c3b3a23139294",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "마감_정규직 채용) 오시아노관광단지 지원단장(총괄관리원)",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=275",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "19e497e6c1406d579820276c",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "마감_정규직 채용) 오시아노관광단지지원단 조경직",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=274",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "010342b4c64dbffe793ffe19",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "마감_정규직 채용) 관광안내부 의료관광비지니스팀 영어",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=273",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "6ef6264361dc42f1afb110e5",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "마감_계약직 채용) 청와대사랑채센터 미화직",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=270",
+      "score": 5,
+      "tags": [
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "bd954d52af9703b3fe1a5aca",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "기간제 채용) 중문골프장 프론트 안내직",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=269",
+      "score": 5,
+      "tags": [
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "94efaf0a9d2ab4c0194af594",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "정규직 채용) 중문골프장지역센터 골프백 상하차",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=268",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "454e28205206287393631c96",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "정규직 채용)오시아노관광단지지원단 조경직",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=267",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "4c91f75aef55944027d3ee26",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "정규직 채용)중문골프장지역센터 미화직",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=266",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "27f29421ec57609ed1e41ae6",
+      "source_id": "kto-partners",
+      "company": "KTO파트너스",
+      "priority": 19,
+      "title": "정규직 채용공고)중문골프장지역센터 코스관리직",
+      "url": "http://www.ktopartners.com/board/view?bd_id=recruit01&wr_id=265",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T13:24:22Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "1c6abecaf2823ab9a44b0539",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "2026년 2차 충청지사 자체 기간제 근무자 채용",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=155",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "707e5f720ca5b1faa0062780",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "'26년 제7·8차 직원 공개 채용(정규직/기간제)",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=154",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "54aaf409cdee8fc51721fd10",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "경기북부지사 2026년 경영지원직 기간제 채용",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=153",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "f0fa4c1e04fecb0b67fcf658",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "경기남부지사 2026년 1차 기간제 직원 채용 공고",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=152",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "95a4c2110758a562c88756f9",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "2026년 1차 충청지사 자체 기간제 직원 채용",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=151",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "ae0b099261319006a4c5d955",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "(서울/조리원) 경인지사 2026년 2차 기간제 기술직 채용(수도권정비사업특별본부)",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=149",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "6b97c12baf5e41cbbfdb8393",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "(강원 속초) 경기북부지사 2026년 1차 기간제 기술직 채용",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=148",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "ae5032895540af359856d9ea",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "'26년 제4·5차 직원 공개 채용",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=147",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "aa0ac6508ef974ab8f9ea37b",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "(인천 계양, 서울) 경인지사 2026년 1차 기간제 기술직 채용",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=146",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "f4c880fc05a6dca828974421",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "[경기북부지사] 강원지역본부 경비 기간제 직원 공개 채용",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=145",
+      "score": 9,
+      "tags": [
+        "수도권",
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "a984de7a6d0ee15ba0666ee0",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "'26년 제3차 정규직 직원 공개 채용(속초연수원)",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=139",
+      "score": 4,
+      "tags": [
+        "수도권"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "40c34d26b0c5dfea6ef55af6",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "[경기북부지사] 강원지역본부 경비, 급식관리 기간제 직원 공개 채용",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=138",
+      "score": 9,
+      "tags": [
+        "수도권",
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "1f80e5eb5717dec20a0c5955",
+      "source_id": "lh-es",
+      "company": "LH E&S",
+      "priority": 1,
+      "title": "'26년 제1차 직원 공개 채용(LH본사-시설관리) 재공고",
+      "url": "https://lhes.co.kr/bbs/board.php?bo_table=emp04_1&wr_id=137",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "c628b593025d3b0d2d4b799c",
+      "source_id": "kepco-fms",
+      "company": "한전FMS",
+      "priority": 2,
+      "title": "2026년 상반기 5직급 채용형 인턴 채용 공고(변경 공고)",
+      "url": "https://www.kepcofms.co.kr/?command=view&contentId=43ec517d68b6edd3015b3edc9a11367b&wr_id=725",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "63efde1420ca15f0c1b434b7",
+      "source_id": "kepco-fms",
+      "company": "한전FMS",
+      "priority": 2,
+      "title": "한전FMS 경력직원 채용 공고",
+      "url": "https://www.kepcofms.co.kr/?command=view&contentId=43ec517d68b6edd3015b3edc9a11367b&wr_id=565",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "6e4de60db87cb402d5788743",
+      "source_id": "kepco-fms",
+      "company": "한전FMS",
+      "priority": 2,
+      "title": "한전FMS 2025년 제2차 4직급 채용 공고(변경 공고)",
+      "url": "https://www.kepcofms.co.kr/?command=view&contentId=43ec517d68b6edd3015b3edc9a11367b&wr_id=534",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "c327728892fe91f5bf19049f",
+      "source_id": "kepco-fms",
+      "company": "한전FMS",
+      "priority": 2,
+      "title": "2025년 하반기 5직급 채용형 인턴 채용 공고",
+      "url": "https://www.kepcofms.co.kr/?command=view&contentId=43ec517d68b6edd3015b3edc9a11367b&wr_id=503",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "b3ddbf78861e84a1d3ec7fcf",
+      "source_id": "kepco-fms",
+      "company": "한전FMS",
+      "priority": 2,
+      "title": "한전FMS 2025년 제1차 4직급 채용 공고",
+      "url": "https://www.kepcofms.co.kr/?command=view&contentId=43ec517d68b6edd3015b3edc9a11367b&wr_id=452",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "5e8dc61241bad29e4b84cacd",
+      "source_id": "kepco-fms",
+      "company": "한전FMS",
+      "priority": 2,
+      "title": "2024년 제3차 직원(4직급 이상 관리직) 채용 공고",
+      "url": "https://www.kepcofms.co.kr/?command=view&contentId=43ec517d68b6edd3015b3edc9a11367b&wr_id=358",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "7d85b2f9bc3e6226bc61d57b",
+      "source_id": "kepco-fms",
+      "company": "한전FMS",
+      "priority": 2,
+      "title": "2024년 5직급 직원 2차 채용 공고",
+      "url": "https://www.kepcofms.co.kr/?command=view&contentId=43ec517d68b6edd3015b3edc9a11367b&wr_id=357",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "0d03fa1305478ced386b4388",
+      "source_id": "kepco-fms",
+      "company": "한전FMS",
+      "priority": 2,
+      "title": "(경원) 서서울변전소 특수경비 계약직 채용공고",
+      "url": "https://www.kepcofms.co.kr/?command=view&contentId=43ec517d68b6edd3015b3edc9a11367b&wr_id=823",
+      "score": 9,
+      "tags": [
+        "수도권",
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "0d2237c8780b4dcf060de289",
+      "source_id": "kepco-fms",
+      "company": "한전FMS",
+      "priority": 2,
+      "title": "(서울) 한전 동서울변전소(특수경비) 계약직 채용",
+      "url": "https://www.kepcofms.co.kr/?command=view&contentId=43ec517d68b6edd3015b3edc9a11367b&wr_id=822",
+      "score": 9,
+      "tags": [
+        "수도권",
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T01:35:34Z",
+      "baseline": true,
+      "active": false
+    },
+    {
+      "id": "0a67c83d41c54902068a5940",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (캠코양재타워)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=242",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "3189d7fd8c8826b0a184efa1",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (캠코직원생활관)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=241",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "aeef8677fd2f4d535ceb0b9c",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (대구통합청사)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=240",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "7584f3ce680619b4c56d4f2f",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (캠코청년생활관)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=239",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "41ae1c9644b570bd29472788",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "2026년 하반기 일반직 및 현장직 채용 공고",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=238",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "4c015b861898e281d4e0cdf7",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (수원고지검청사)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=237",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "ca5bb5ab514aa242f51e018c",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (광주통합청사)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=236",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "164a908880bfd10ad05702cd",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (세종다산마을)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=235",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "8d95c5f458dc413e46102a32",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (캠코직원생활관)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=234",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "9477693b77668050b83ab5a6",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (캠코직원생활관)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=233",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "fd0987ae759d985bba57f07b",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (캠코직원생활관)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=232",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "008732f83b91ab21c8b82dca",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (태안정책연수원)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=231",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "0100b03a04160ad32ee9aafb",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "현장 단기계약직 근로자 채용 공고 (콘텐츠인재캠퍼스)",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=230",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "9fa858b4004d13ae35ed43be",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "2026년 운전원(계약직) 채용 공고",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=229",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "0844587af2f14710339f3b21",
+      "source_id": "kamco-fmc",
+      "company": "캠코FMC / 캠코시설관리",
+      "priority": 3,
+      "title": "2026년 경영본부장 채용 공고",
+      "url": "https://kamcofmc.co.kr:443/bbs/board.php?bo_table=s4_3&wr_id=228",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "971134d9e5b0749ab7b03bef",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "2026년 상반기 공무직 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2026-0150",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "148e0921bbc526e48e4923ad",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "기간제근로자(보건관리자) 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2026-0149",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "c75465100b53ee69fc64c4e6",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "연말정산 사무보조 기간제 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2026-0145",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "5f6ba994835d7fc21b9842ab",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "2026년 사무직 기간제 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2026-0144",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "d564c038e14afddd87de0e9a",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "연말정산 사무보조 기간제 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2025-0143",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "020b29199662d37a58710444",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "업무개선TF팀 전문인력 기간제 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2025-0142",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "047025a8d0a6aa7191bfc269",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "2025년 하반기 공무직 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2025-0140",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "79b03a2ea530609b4b4601b0",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "2025년 사무직 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2025-0139",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "f2e054883b421753f83ca23a",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "2025년 상반기 공무직 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2025-0138",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "f118c6dc8014b077aa1702ab",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "2025년 사무직 공개채용 공고",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2025-0137",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "a89ed13b788cbc895e9c1082",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "사무직 기간제 채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2025-0136",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "9076933814259a2f258a346e",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "연말정산 사무보조 기간제 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2025-0135",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "39e9b52b56e19d789e0bc373",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "업무개선TF팀 전문인력 기간제 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2024-0134",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "c4d7eab11fdf4f90ab49fa53",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "2024년 하반기 공무직 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2024-0132",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "dfe56af6fab43bb16ab2ed06",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "사무직 대체기간제 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2024-0130",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "9c7c4e8ec6e1e4c593cba35e",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "사무직 대체기간제 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2024-0129",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "a2a1fcd823207c79a5dcecad",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "2024년 1분기 직원 공개채용 공고",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2024-0124",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "7eb5185c0b4952f190713cb2",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "사무직 대체기간제 직원 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2024-0123",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "931a5b15be58ceabc576d1df",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "사무직 기간제 직원 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2024-0122",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "788530f4003966e9ff60b2bb",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "2023년 하반기 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2023-0119",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "eeec3edc7837a3a24dab67b3",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "사무직 기간제 공개채용 공고",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2023-0118",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "1d72fffd6f1fc6a330e3fd99",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "사무직 대체기간제 공개채용 공고",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2023-0113",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "3830c3c5e926e471951cfbfd",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "2023년 상반기 공개채용 공고",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2023-0108",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "9115486554fe741c78bffe6f",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "육아휴직 대체기간제 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2023-0106",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "74b8e39e5c6d96adaf2f42d3",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "육아휴직자 대체기간제 공개채용",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2023-0105",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "4221bd3d6ed50e25f421a48c",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "기간제 팀장 및 센터 사무관리 공개채용 공고",
+      "url": "https://www.smrtg.co.kr/employment/stffPbanInfo.do?stffPbanNo=2023-0097",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "416b47c52588fbd49c3ab57f",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "2026년 상반기 공무직 공개채용 별첨자료",
+      "url": "https://www.smrtg.co.kr/bbs/employment/ent/page.do",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "53e5c64c2d4c91131068eaed",
+      "source_id": "smrt-green",
+      "company": "서울도시철도그린환경",
+      "priority": 6,
+      "title": "대체기간제근로자(보건관리자) 공개채용 별첨자료",
+      "url": "https://www.smrtg.co.kr/bbs/employment/ent/page.do",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "426922c0ec72bc2bf2a0c6d3",
+      "source_id": "smrt-engineering",
+      "company": "서울도시철도엔지니어링",
+      "priority": 7,
+      "title": "기술처 기간제업무직(소방, 전기, 시설일반) 직원 공개채용",
+      "url": "https://www.smrte.co.kr/resources/careers",
+      "score": 5,
+      "tags": [
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "adb6f8b962426a6e65a07fbf",
+      "source_id": "smrt-engineering",
+      "company": "서울도시철도엔지니어링",
+      "priority": 7,
+      "title": "서비스운영처 기간제업무직(유실물관리파트) 직원 공개채용",
+      "url": "https://www.smrte.co.kr/resources/careers",
+      "score": 5,
+      "tags": [
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "bc54d7dbda58b629ee495bfd",
+      "source_id": "smrt-engineering",
+      "company": "서울도시철도엔지니어링",
+      "priority": 7,
+      "title": "철도운전직렬 구내운전·특수차 업무직(기간제) 공개채용 공고",
+      "url": "https://www.smrte.co.kr/resources/careers",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "f8ca5ab17080f945ec7eaa18",
+      "source_id": "smrt-engineering",
+      "company": "서울도시철도엔지니어링",
+      "priority": 7,
+      "title": "철도운전직렬 특수차 업무직(기간제) 공개채요 공고",
+      "url": "https://www.smrte.co.kr/resources/careers",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "820afb6f529468f67ada246f",
+      "source_id": "smrt-engineering",
+      "company": "서울도시철도엔지니어링",
+      "priority": 7,
+      "title": "2026년 물류사업처 기간제업무직 직원 공개채용",
+      "url": "https://www.smrte.co.kr/resources/careers",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "af82676f90159000f28d8cce",
+      "source_id": "kac-service",
+      "company": "KAC공항서비스",
+      "priority": 8,
+      "title": "2026년 상반기 채용형 인턴 공개 채용 공고 안내(~2026.4.13.)",
+      "url": "https://www.kacas.kr/recruit/notice.php?boardid=recruit&idx=130&mode=view",
+      "score": 5,
+      "tags": [
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "001231577e1701793fad2a47",
+      "source_id": "kac-service",
+      "company": "KAC공항서비스",
+      "priority": 8,
+      "title": "2025년 하반기 채용형 인턴 공개채용 공고 안내(~2025.11.6.)",
+      "url": "https://www.kacas.kr/recruit/notice.php?boardid=recruit&idx=127&mode=view",
+      "score": 5,
+      "tags": [
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "b29b0d1a4d045e995e7d3e95",
+      "source_id": "kac-service",
+      "company": "KAC공항서비스",
+      "priority": 8,
+      "title": "2025년 상반기 직원 공개채용 공고 안내(~2025.5.5.)",
+      "url": "https://www.kacas.kr/recruit/notice.php?boardid=recruit&idx=125&mode=view",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "7db826d9c6fa3246c955ebb1",
+      "source_id": "kac-service",
+      "company": "KAC공항서비스",
+      "priority": 8,
+      "title": "[기간제 채용] KAC공항서비스 양양공항 조류충돌예방 분야 기간제 채용 (수렵면허 소지자...",
+      "url": "https://www.kacas.kr/recruit/notice.php?boardid=recruit&idx=121&mode=view",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "09dc017c6efcf8c4ef034f98",
+      "source_id": "kac-service",
+      "company": "KAC공항서비스",
+      "priority": 8,
+      "title": "2024년 하반기 직원 공개채용 공고(~2024.11.11. 마감)",
+      "url": "https://www.kacas.kr/recruit/notice.php?boardid=recruit&idx=117&mode=view",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "c98999cb8f81d771bfe60916",
+      "source_id": "airport-os",
+      "company": "인천공항운영서비스",
+      "priority": 9,
+      "title": "(2026-3) 직원 채용 공고",
+      "url": "https://www.airportos.co.kr/?act=board&bbs_code=job&bbs_mode=view&bbs_seq=868",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "bf0412246a4fb3d28be09d82",
+      "source_id": "airport-os",
+      "company": "인천공항운영서비스",
+      "priority": 9,
+      "title": "(2026-2) 직원 채용 공고 (일정 변경)",
+      "url": "https://www.airportos.co.kr/?act=board&bbs_code=job&bbs_mode=view&bbs_seq=859",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "65f9e0fbbbc0dc154170546e",
+      "source_id": "airport-os",
+      "company": "인천공항운영서비스",
+      "priority": 9,
+      "title": "(2026-2) 직원 채용 공고",
+      "url": "https://www.airportos.co.kr/?act=board&bbs_code=job&bbs_mode=view&bbs_seq=855",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "de6796ff65948930e7bee1d5",
+      "source_id": "airport-os",
+      "company": "인천공항운영서비스",
+      "priority": 9,
+      "title": "(2026-1) 직원 채용 공고",
+      "url": "https://www.airportos.co.kr/?act=board&bbs_code=job&bbs_mode=view&bbs_seq=819",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "48fc22d20ca3166f779ebe63",
+      "source_id": "airport-os",
+      "company": "인천공항운영서비스",
+      "priority": 9,
+      "title": "(2025-3) 직원 채용 공고",
+      "url": "https://www.airportos.co.kr/?act=board&bbs_code=job&bbs_mode=view&bbs_seq=786",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "74695d51cba01fdd4a3f167a",
+      "source_id": "airport-os",
+      "company": "인천공항운영서비스",
+      "priority": 9,
+      "title": "(2025-2) 직원 채용 공고",
+      "url": "https://www.airportos.co.kr/?act=board&bbs_code=job&bbs_mode=view&bbs_seq=765",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "2d750bbdf3168d64e3bdfbdb",
+      "source_id": "airport-os",
+      "company": "인천공항운영서비스",
+      "priority": 9,
+      "title": "(2025-1) 직원 채용 공고",
+      "url": "https://www.airportos.co.kr/?act=board&bbs_code=job&bbs_mode=view&bbs_seq=731",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "b457e89fc7224991e933526e",
+      "source_id": "airport-os",
+      "company": "인천공항운영서비스",
+      "priority": 9,
+      "title": "(2024-3) 직원 채용 변경 공고",
+      "url": "https://www.airportos.co.kr/?act=board&bbs_code=job&bbs_mode=view&bbs_seq=679",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "037a8a6006bc7338db874213",
+      "source_id": "airport-os",
+      "company": "인천공항운영서비스",
+      "priority": 9,
+      "title": "(2024-4) 직원 채용 공고",
+      "url": "https://www.airportos.co.kr/?act=board&bbs_code=job&bbs_mode=view&bbs_seq=670",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "eb7da4995a067dc4e383f64f",
+      "source_id": "airport-fc",
+      "company": "인천공항시설관리",
+      "priority": 10,
+      "title": "인천국제공항 하계 성수기 셀프서비스 지원인력 모집공고",
+      "url": "https://www.airportfc.co.kr/?act=board&bbs_code=sub5_5&bbs_mode=view&bbs_seq=1789",
+      "score": 4,
+      "tags": [
+        "수도권"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "b13e617e9bfbf46edc72149e",
+      "source_id": "airport-fc",
+      "company": "인천공항시설관리",
+      "priority": 10,
+      "title": "비행장사업소 기간제 근로자 채용",
+      "url": "https://www.airportfc.co.kr/?act=board&bbs_code=sub5_5&bbs_mode=view&bbs_seq=1787",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "268381f393c03b69e10131d4",
+      "source_id": "airport-fc",
+      "company": "인천공항시설관리",
+      "priority": 10,
+      "title": "2026년 제2차 정기채용",
+      "url": "https://www.airportfc.co.kr/?act=board&bbs_code=sub5_5&bbs_mode=view&bbs_seq=1773",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "29551ed9494eb1bdb27fee2d",
+      "source_id": "airport-fc",
+      "company": "인천공항시설관리",
+      "priority": 10,
+      "title": "2026년 제5차 계약직 채용",
+      "url": "https://www.airportfc.co.kr/?act=board&bbs_code=sub5_5&bbs_mode=view&bbs_seq=1768",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "6343dfc1d1e9e50268881a56",
+      "source_id": "airport-fc",
+      "company": "인천공항시설관리",
+      "priority": 10,
+      "title": "비행장사업소 기간제근로자 채용",
+      "url": "https://www.airportfc.co.kr/?act=board&bbs_code=sub5_5&bbs_mode=view&bbs_seq=1755",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "0ee4659716ca288a8890a1c0",
+      "source_id": "airport-fc",
+      "company": "인천공항시설관리",
+      "priority": 10,
+      "title": "인천국제공항 셀프서비스 지원인력 모집공고",
+      "url": "https://www.airportfc.co.kr/?act=board&bbs_code=sub5_5&bbs_mode=view&bbs_seq=1754",
+      "score": 4,
+      "tags": [
+        "수도권"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "a837025dda3b90d64aaee4db",
+      "source_id": "airport-fc",
+      "company": "인천공항시설관리",
+      "priority": 10,
+      "title": "2026년 제4차 계약직 채용",
+      "url": "https://www.airportfc.co.kr/?act=board&bbs_code=sub5_5&bbs_mode=view&bbs_seq=1752",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "5af80085f610d9aac812c6f5",
+      "source_id": "airport-fc",
+      "company": "인천공항시설관리",
+      "priority": 10,
+      "title": "2026년 제3차 계약직 채용",
+      "url": "https://www.airportfc.co.kr/?act=board&bbs_code=sub5_5&bbs_mode=view&bbs_seq=1715",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "698e72340a80b07406b619dd",
+      "source_id": "airport-fc",
+      "company": "인천공항시설관리",
+      "priority": 10,
+      "title": "비행장사업소 기간제근로자 채용",
+      "url": "https://www.airportfc.co.kr/?act=board&bbs_code=sub5_5&bbs_mode=view&bbs_seq=1709",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "915f61b1045aa6690a22515e",
+      "source_id": "airport-fc",
+      "company": "인천공항시설관리",
+      "priority": 10,
+      "title": "인천국제공항 셀프서비스 지원인력 모집공고",
+      "url": "https://www.airportfc.co.kr/?act=board&bbs_code=sub5_5&bbs_mode=view&bbs_seq=1708",
+      "score": 4,
+      "tags": [
+        "수도권"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "20dc29985ecd17beae9e5303",
+      "source_id": "airport-security",
+      "company": "인천국제공항보안",
+      "priority": 11,
+      "title": "(2026-4) 보안경비직 직원 채용 공고",
+      "url": "https://airportsc.kr/bbs/board.php?bo_table=recruits&wr_id=81",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "3280f403931f566c1bac9f2f",
+      "source_id": "airport-security",
+      "company": "인천국제공항보안",
+      "priority": 11,
+      "title": "(2026-3) 일반직 및 계약직 직원 채용 공고",
+      "url": "https://airportsc.kr/bbs/board.php?bo_table=recruits&wr_id=80",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "887c97cf6574a6f2fd70ebdd",
+      "source_id": "airport-security",
+      "company": "인천국제공항보안",
+      "priority": 11,
+      "title": "(2026-2) 보안검색직 직원 채용 공고",
+      "url": "https://airportsc.kr/bbs/board.php?bo_table=recruits&wr_id=79",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "eabdc8f335920c3a8bd33d84",
+      "source_id": "airport-security",
+      "company": "인천국제공항보안",
+      "priority": 11,
+      "title": "(2026-1) 보안경비직 직원 채용 공고",
+      "url": "https://airportsc.kr/bbs/board.php?bo_table=recruits&wr_id=78",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "2f66a39236ee7bd4468e89cf",
+      "source_id": "airport-security",
+      "company": "인천국제공항보안",
+      "priority": 11,
+      "title": "(2025-10) 보안검색직 직원 채용 공고",
+      "url": "https://airportsc.kr/bbs/board.php?bo_table=recruits&wr_id=77",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "d178c10a943da2e132547851",
+      "source_id": "airport-security",
+      "company": "인천국제공항보안",
+      "priority": 11,
+      "title": "(2025-9)보안검색직 직원 채용 공고",
+      "url": "https://airportsc.kr/bbs/board.php?bo_table=recruits&wr_id=75",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "3791bee2e81b56b1ed3d7723",
+      "source_id": "airport-security",
+      "company": "인천국제공항보안",
+      "priority": 11,
+      "title": "(2025-7) 보안경비직 직원 채용 공고",
+      "url": "https://airportsc.kr/bbs/board.php?bo_table=recruits&wr_id=73",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "95410c37a0adbf1812c1f915",
+      "source_id": "airport-security",
+      "company": "인천국제공항보안",
+      "priority": 11,
+      "title": "(2025-6) 일반직 직원 채용 공고",
+      "url": "https://airportsc.kr/bbs/board.php?bo_table=recruits&wr_id=72",
+      "score": 0,
+      "tags": [],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "dda803f1fad44a6e81d645d1",
+      "source_id": "airport-security",
+      "company": "인천국제공항보안",
+      "priority": 11,
+      "title": "(2025-5) 보안검색직 직원 채용 공고",
+      "url": "https://airportsc.kr/bbs/board.php?bo_table=recruits&wr_id=71",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "25ebc04a42be19abd1a3ed8d",
+      "source_id": "airport-security",
+      "company": "인천국제공항보안",
+      "priority": 11,
+      "title": "(2025-4) 계약직 직원 채용 공고",
+      "url": "https://airportsc.kr/bbs/board.php?bo_table=recruits&wr_id=70",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "42b1359c0f4d969d45559fb0",
+      "source_id": "airport-security",
+      "company": "인천국제공항보안",
+      "priority": 11,
+      "title": "(2025-3) 보안경비직 직원 채용 공고",
+      "url": "https://airportsc.kr/bbs/board.php?bo_table=recruits&wr_id=67",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "fcb30ae81b1c6cb8c95e4116",
+      "source_id": "korea-airport-security",
+      "company": "한국공항보안",
+      "priority": 12,
+      "title": "수시채용(계약직)",
+      "url": "https://airsecure.co.kr/contents/recruit_notice_contract.php",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "f6c82449b754b08aaa1394a6",
+      "source_id": "korea-airport-security",
+      "company": "한국공항보안",
+      "priority": 12,
+      "title": "(2026-02차) 한국공항보안(주) 항공보안직 신규 공개채용 공고",
+      "url": "https://airsecure.co.kr/contents/readCount_rn.php?no=57",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "b1f0cb0577407dc757a8a1a3",
+      "source_id": "korea-airport-security",
+      "company": "한국공항보안",
+      "priority": 12,
+      "title": "(보훈특별고용) 한국공항보안(주) 항공보안직 신규직원 채용 공고",
+      "url": "https://airsecure.co.kr/contents/readCount_rn.php?no=56",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "a3258396c6de2e81b6e5e356",
+      "source_id": "korea-airport-security",
+      "company": "한국공항보안",
+      "priority": 12,
+      "title": "(2026-01차) 한국공항보안(주) 항공보안직 신규 공개채용 공고",
+      "url": "https://airsecure.co.kr/contents/readCount_rn.php?no=53",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "50433e5c27d4107f8c36c753",
+      "source_id": "korea-airport-security",
+      "company": "한국공항보안",
+      "priority": 12,
+      "title": "(보훈특별고용) 한국공항보안(주) 항공보안직 신규직원 채용 공고",
+      "url": "https://airsecure.co.kr/contents/readCount_rn.php?no=52",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "c6862a5b283f4c5e5a0645b6",
+      "source_id": "korea-airport-security",
+      "company": "한국공항보안",
+      "priority": 12,
+      "title": "한국공항보안(주) 항공보안직 신규직원 채용(보훈특별고용)",
+      "url": "https://airsecure.co.kr/contents/readCount_rn.php?no=47",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "552c9e27c9e4acb377d170c9",
+      "source_id": "korea-airport-security",
+      "company": "한국공항보안",
+      "priority": 12,
+      "title": "(2025-02차) 한국공항보안(주) 항공보안직 신규 공개채용 공고",
+      "url": "https://airsecure.co.kr/contents/readCount_rn.php?no=46",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "fa70e744f21149440b4759b0",
+      "source_id": "korail-tech",
+      "company": "코레일테크",
+      "priority": 13,
+      "title": "2026년 제3차 공무직사원 채용 공고",
+      "url": "https://www.korailtech.com/recruitNotice/view.do?nttId=4391",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "5b8e9fc9186d775e38652900",
+      "source_id": "korail-tech",
+      "company": "코레일테크",
+      "priority": 13,
+      "title": "2026년 제3차 현장기간제 사원 채용 공고",
+      "url": "https://www.korailtech.com/recruitNotice/view.do?nttId=4381",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "9848c431e8cfce03c80efa87",
+      "source_id": "korail-tech",
+      "company": "코레일테크",
+      "priority": 13,
+      "title": "2026년 제1차 일반직사원(채용형인턴) 채용 공고",
+      "url": "https://www.korailtech.com/recruitNotice/view.do?nttId=4368",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "e11414a6c652a0f3861ba192",
+      "source_id": "korail-tech",
+      "company": "코레일테크",
+      "priority": 13,
+      "title": "2026년 제2차 공무직사원 채용 공고",
+      "url": "https://www.korailtech.com/recruitNotice/view.do?nttId=4325",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "c39e0ce4eb24a03445de6cf7",
+      "source_id": "korail-tech",
+      "company": "코레일테크",
+      "priority": 13,
+      "title": "2026년 제1차 본사(지사) 기간제사원 및 청년인턴 채용 공고",
+      "url": "https://www.korailtech.com/recruitNotice/view.do?nttId=4324",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "4286184759743b85cab4bf0f",
+      "source_id": "korail-tech",
+      "company": "코레일테크",
+      "priority": 13,
+      "title": "2026년 제2차 현장기간제 사원 채용 공고",
+      "url": "https://www.korailtech.com/recruitNotice/view.do?nttId=4323",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "a227bcc89d491144583e585b",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "IBK서비스 경비직종 정규직 신규채용 (IBK기업은행 수지IT센터)",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2576",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "af46128bebc2e3d9089d290a",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "IBK서비스 사무직종 정규직 신규채용(IBK기업은행 한남동고객센터)",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2575",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "8a8c749ce6ef6798a474ee06",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "IBK서비스 조리직종(조리원) 정규직 신규채용 (IBK기업은행 한남동고객센터)",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2574",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "190c9d05db8d8fea1146e545",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "IBK서비스 경비직종 정규직 신규채용 (IBK기업은행 양평동)",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2573",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "9f2487fe450bddc5a56bc5f0",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "본사 계약직(수행기사) 채용",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2572",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "6e857ebbe69ae672d2c50c63",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "IBK서비스 미화직종 정규직 신규채용(서울시 성동구, 금천구/경기도 남양주시, 수원시,성남시, 화성시 /대전시 서구 /충남 아산시/강원 속초시)",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2571",
+      "score": 7,
+      "tags": [
+        "수도권",
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "1a1cf2671200030128e389ed",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "IBK서비스 경비직종 정규직 신규채용 (IBK기업은행 수지IT센터)",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2570",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "fcaebe71a323893bb19f22b6",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "IBK서비스 경비직종(안내데스크) 계약직 신규채용 (IBK기업은행 본점)",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2569",
+      "score": 5,
+      "tags": [
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "173e416983e25f7da0f0671e",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "IBK서비스 미화직종 정규직 신규채용(IBK기업은행 수지IT센터)",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2568",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "4313213dd1f3a348a3821a51",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "IBK서비스 조리직종(조리원) 정규직 신규채용 (IBK기업은행 한남동고객센터)",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2567",
+      "score": 3,
+      "tags": [
+        "관심직무"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "c3b90e7d3c15757d7a4fa67f",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 경기북부지사 보훈특별고용 채용형 인턴(기술직) 채용 공고",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&schCon=0",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "328c992ada8e10940ea7d086",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 강원지사 채용형 인턴(기술직)채용공고_긴급(동해삼척권역)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&schCon=0",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "96622b9f9c43f44c57e37095",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단(본사) 체험형인턴 채용공고 (장애인 제한경쟁)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&schCon=0",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "52bfa64b735f0af5b0b67d4e",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 경기남부지사 채용형인턴(기술직) 채용공고(긴급)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&schCon=0",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "8ddd8122d7e348bfe6f8f5e0",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 전북지사 신입직원(전북권, 기술직) 채용공고(긴급)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&schCon=0",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "928563d06e97cd1fe59e5c34",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 충북지사 체험형 인턴(기술) 채용 공고",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&schCon=0",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "1d0115f93a66b99f4e164ad3",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 인천지사 채용형 인턴 채용 공고(긴급)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&schCon=0",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "49ad70937ec56d95172f787d",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 경기북부지사 채용형 인턴(행정직 1명) 채용 공고[경기북부 권역_긴급]",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&schCon=0",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "073dd363e84957eb9567e5dc",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 경기북부지사 채용형 인턴(기술직 1명) 채용 공고[경기북부 권역_긴급]",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&schCon=0",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "a96916dd8f58c209fcd632fb",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 대전충남지사 채용형 인턴 채용 공고(긴급)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&schCon=0",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "f10330032ffb2c180aa37472",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 경기북부지사 보훈특별고용 채용형 인턴(기술직) 채용 공고",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008.do",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "bbbdc5b47b56a1340cb60de9",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 강원지사 채용형 인턴(기술직)채용공고_긴급(동해삼척권역)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008.do",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "5d91d6e1b77d14f1510995c3",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단(본사) 체험형인턴 채용공고 (장애인 제한경쟁)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008.do",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "d595026425f1f8dc773b0676",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 경기남부지사 채용형인턴(기술직) 채용공고(긴급)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008.do",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "bd51390ab147d580c56dfb83",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 전북지사 신입직원(전북권, 기술직) 채용공고(긴급)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008.do",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "920da960c8295eda48d58297",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 충북지사 체험형 인턴(기술) 채용 공고",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008.do",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "cda5cc867852d5ff1fe86f0f",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 인천지사 채용형 인턴 채용 공고(긴급)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008.do",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "da5cda7b697716c459205be0",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 경기북부지사 채용형 인턴(행정직 1명) 채용 공고[경기북부 권역_긴급]",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008.do",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "7c5d6a5e73bcbfd9aaca12d1",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 경기북부지사 채용형 인턴(기술직 1명) 채용 공고[경기북부 권역_긴급]",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008.do",
+      "score": 6,
+      "tags": [
+        "수도권",
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "759b1a0418f5a0625a0075e6",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 대전충남지사 채용형 인턴 채용 공고(긴급)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008.do",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "57221bb3d74ca53607d3c4d6",
+      "source_id": "ex-service",
+      "company": "한국도로공사서비스",
+      "priority": 18,
+      "title": "한국도로공사서비스(주) 2026년 교통방송센터 기간제근로자 채용 공고 파일첨부",
+      "url": "https://www.exservice.co.kr/boad/bd_recruit/egoread.php?bd=1&seq=4879",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "f29108d70f2806540fe3a2ab",
+      "source_id": "ex-service",
+      "company": "한국도로공사서비스",
+      "priority": 18,
+      "title": "한국도로공사서비스(주) 2026년 기간제근로자 채용 공고 파일첨부",
+      "url": "https://www.exservice.co.kr/boad/bd_recruit/egoread.php?bd=1&seq=4878",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "e40f552f847583867a1b53a8",
+      "source_id": "ex-service",
+      "company": "한국도로공사서비스",
+      "priority": 18,
+      "title": "한국도로공사서비스(주) 2026년 기간제근로자 채용 재공고 파일첨부",
+      "url": "https://www.exservice.co.kr/boad/bd_recruit/egoread.php?bd=1&seq=4875",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "5363805eaf105d63e8c296b6",
+      "source_id": "ex-service",
+      "company": "한국도로공사서비스",
+      "priority": 18,
+      "title": "한국도로공사서비스(주) 2026년 교통방송센터 기간제근로자 채용 공고 파일첨부",
+      "url": "https://www.exservice.co.kr/boad/bd_recruit/egoread.php?bd=1&seq=4868",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "404b46bbf967e620926725ee",
+      "source_id": "ex-service",
+      "company": "한국도로공사서비스",
+      "priority": 18,
+      "title": "한국도로공사서비스(주) 2026년 기간제근로자 채용 공고 파일첨부",
+      "url": "https://www.exservice.co.kr/boad/bd_recruit/egoread.php?bd=1&seq=4867",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "41367901841b55b44de99ef4",
+      "source_id": "ex-service",
+      "company": "한국도로공사서비스",
+      "priority": 18,
+      "title": "한국도로공사서비스(주) 2026년 신입직원(인턴) 채용 공고 파일첨부",
+      "url": "https://www.exservice.co.kr/boad/bd_recruit/egoread.php?bd=1&seq=4866",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "4accd45b5b500662c84f5bd5",
+      "source_id": "ex-service",
+      "company": "한국도로공사서비스",
+      "priority": 18,
+      "title": "한국도로공사서비스(주) 2026년 기간제근로자 채용 재공고 파일첨부",
+      "url": "https://www.exservice.co.kr/boad/bd_recruit/egoread.php?bd=1&seq=4846",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    },
+    {
+      "id": "7fe7ae3a510d8f68aeaa0df0",
+      "source_id": "ex-service",
+      "company": "한국도로공사서비스",
+      "priority": 18,
+      "title": "한국도로공사서비스(주) 2026년 기간제근로자 채용 공고 파일첨부",
+      "url": "https://www.exservice.co.kr/boad/bd_recruit/egoread.php?bd=1&seq=4841",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-07-20T01:35:34Z",
+      "last_seen": "2026-07-20T13:42:15Z",
+      "baseline": true,
+      "active": true
+    }
+  ]
+}
