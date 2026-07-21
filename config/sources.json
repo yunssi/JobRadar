@@ -12,7 +12,7 @@
   {"id":"airport-security","name":"인천국제공항보안","priority":11,"home":"https://airportsc.kr/","urls":["https://airportsc.kr/bbs/board.php?bo_table=recruits"]},
   {"id":"korea-airport-security","name":"한국공항보안","priority":12,"home":"https://airsecure.co.kr/","urls":["https://airsecure.co.kr/contents/recruit_notice.php"]},
   {"id":"korail-tech","name":"코레일테크","priority":13,"home":"https://www.korailtech.com/","urls":["https://www.korailtech.com/recruitNotice/list.do?pageIndex=1"]},
-  {"id":"korail-networks","name":"코레일네트웍스","priority":14,"home":"https://www.korailnetworks.com/","urls":["https://www.korailnetworks.com/"]},
+  {"id":"korail-networks","name":"코레일네트웍스","priority":14,"home":"https://www.korailnetworks.com/","urls":["https://www.korailnetworks.com/kn/2021/sub06/sub06100.jsp"],"post_request":{"url":"https://www.korailnetworks.com/kn/2021/lib/getData.jsp","form":{"actionMode":"commonBoard","actionType":"005","currentPage":"1","noticeSeq":"","ntt_id":"","viewSeq":"","ntt_no":"","bbsgb":"","schType":"title","sbjctTxt":""}}},
   {"id":"kdb-biz","name":"산은비즈","priority":15,"home":"https://www.kdbbiz.co.kr/","urls":["https://www.kdbbiz.co.kr/"]},
   {"id":"ibk-service","name":"IBK서비스","priority":16,"home":"https://www.ibkservice.co.kr/","urls":["https://www.ibkservice.co.kr/recruit/notice/list"]},
   {"id":"kohom","name":"주택관리공단","priority":17,"home":"https://www.kohom.or.kr/","urls":["https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&page=1&schCon=0"]},

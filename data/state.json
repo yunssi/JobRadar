@@ -2916,7 +2916,7 @@
       "error": null
     },
     "korail-networks": {
-      "initialized": true,
+      "initialized": false,
       "ok": false,
       "health": "error",
       "last_checked": "2026-07-21T04:33:12Z",

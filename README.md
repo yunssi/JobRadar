@@ -116,6 +116,9 @@ uv run python monitor.py --dry-run
 인증서 파일을 추가합니다. `tls_ca_file`은 저장소 안의 유효한 인증서와 HTTPS URL에만 사용할 수
 있으며, 시스템 신뢰 저장소·인증서 검증·호스트명 검증은 그대로 유지됩니다.
 
+코레일네트웍스 채용 목록은 화면을 연 뒤 JavaScript가 별도 POST 요청으로 불러옵니다. 사용자에게
+보여줄 공식 채용 페이지는 `urls`에 두고, 수집용 요청은 같은 사이트의 `post_request`에 정의합니다.
+
 GitHub Actions cron은 UTC 기준입니다. `15 21 * * *`는 한국시간 다음 날 오전 6시 15분이며,
 GitHub 실행 상황에 따라 시작이 몇 분 늦어질 수 있습니다.
 

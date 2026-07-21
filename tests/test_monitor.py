@@ -130,6 +130,18 @@ class MonitorConfigurationTests(unittest.TestCase):
             "certificates/sectigo-rsa-domain-validation-secure-server-ca.pem",
         )
 
+    def test_load_sources_accepts_same_site_post_request(self) -> None:
+        sources = make_sources()
+        sources[0]["post_request"] = {
+            "url": "https://source-1.example.com/board/data",
+            "form": {"actionType": "005", "currentPage": "1"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sources.json"
+            monitor.write_json(path, sources)
+            loaded = monitor.load_sources(path)
+        self.assertEqual(loaded[0]["post_request"]["form"]["actionType"], "005")
+
     def test_load_sources_rejects_invalid_count_duplicate_and_url(self) -> None:
         cases: list[tuple[str, list[monitor.SourceConfig]]] = []
         too_few = make_sources()[:-1]
@@ -150,6 +162,20 @@ class MonitorConfigurationTests(unittest.TestCase):
         escaped_ca = make_sources()
         escaped_ca[0]["tls_ca_file"] = "../outside.pem"
         cases.append(("escaped CA", escaped_ca))
+
+        cross_site_post = make_sources()
+        cross_site_post[0]["post_request"] = {
+            "url": "https://untrusted.example.net/data",
+            "form": {"actionType": "005"},
+        }
+        cases.append(("cross-site POST", cross_site_post))
+
+        invalid_post_form = make_sources()
+        invalid_post_form[0]["post_request"] = {
+            "url": "https://source-1.example.com/data",
+            "form": {"actionType": 5},  # type: ignore[dict-item]
+        }
+        cases.append(("invalid POST form", invalid_post_form))
 
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "sources.json"
@@ -179,6 +205,25 @@ class MonitorConfigurationTests(unittest.TestCase):
         context.load_verify_locations.assert_called_once_with(cafile=str(ca_file))
         self.assertIs(opener.call_args.kwargs["context"], context)
 
+    def test_fetch_posts_encoded_form_with_referer(self) -> None:
+        response = mock.MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = b"result"
+        response.headers.get_content_charset.return_value = "utf-8"
+        with mock.patch("monitor.urlopen", return_value=response) as opener:
+            monitor.fetch(
+                "https://example.com/data",
+                retries=0,
+                form_data={"actionType": "005", "currentPage": "1"},
+                referer="https://example.com/recruit",
+            )
+
+        request = opener.call_args.args[0]
+        self.assertEqual(request.method, "POST")
+        self.assertEqual(request.data, b"actionType=005&currentPage=1")
+        self.assertEqual(request.get_header("Content-type"), "application/x-www-form-urlencoded; charset=UTF-8")
+        self.assertEqual(request.get_header("Referer"), "https://example.com/recruit")
+
     def test_collect_source_uses_extra_ca_only_for_configured_source(self) -> None:
         source = make_sources()[0]
         source["tls_ca_file"] = "certificates/sectigo-rsa-domain-validation-secure-server-ca.pem"
@@ -189,6 +234,26 @@ class MonitorConfigurationTests(unittest.TestCase):
             source["urls"][0],
             extra_ca_file=monitor.ROOT / source["tls_ca_file"],
         )
+
+    def test_collect_source_uses_post_response_with_display_page_job_url(self) -> None:
+        source = make_sources()[0]
+        source["urls"] = ["https://source-1.example.com/recruit"]
+        source["post_request"] = {
+            "url": "https://source-1.example.com/board/data",
+            "form": {"actionType": "005", "currentPage": "1"},
+        }
+        document = '<a href="javascript:show(42)">2026년 코레일네트웍스 시설직 공개채용 공고</a>'
+        with mock.patch("monitor.fetch", return_value=document) as fetcher:
+            result = monitor.collect_source(source)
+
+        fetcher.assert_called_once_with(
+            source["post_request"]["url"],
+            extra_ca_file=None,
+            form_data=source["post_request"]["form"],
+            referer=source["urls"][0],
+        )
+        self.assertEqual(len(result.jobs), 1)
+        self.assertEqual(result.jobs[0]["url"], source["urls"][0])
 
     def test_malformed_state_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

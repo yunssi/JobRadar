@@ -201,6 +201,11 @@ class ConfigurationError(JobRadarError):
     """Raised when committed configuration or state is invalid."""
 
 
+class PostRequestConfig(TypedDict):
+    url: str
+    form: dict[str, str]
+
+
 class SourceConfig(TypedDict):
     id: str
     name: str
@@ -208,6 +213,7 @@ class SourceConfig(TypedDict):
     home: str
     urls: list[str]
     tls_ca_file: NotRequired[str]
+    post_request: NotRequired[PostRequestConfig]
 
 
 class JobRecord(TypedDict, total=False):
@@ -288,21 +294,33 @@ def decode_body(raw: bytes, declared: str | None = None) -> str:
     return raw.decode("utf-8", errors="replace")
 
 
-def fetch(url: str, timeout: int = 25, retries: int = 2, extra_ca_file: Path | None = None) -> str:
+def fetch(
+    url: str,
+    timeout: int = 25,
+    retries: int = 2,
+    *,
+    extra_ca_file: Path | None = None,
+    form_data: dict[str, str] | None = None,
+    referer: str | None = None,
+) -> str:
     last_error: Exception | None = None
     context = ssl.create_default_context()
     if extra_ca_file is not None:
         context.load_verify_locations(cafile=str(extra_ca_file))
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "text/html,application/xhtml+xml,application/json;q=0.8,*/*;q=0.5",
+        "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.5",
+    }
+    body: bytes | None = None
+    if form_data is not None:
+        body = urlencode(form_data).encode("utf-8")
+        headers["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8"
+    if referer is not None:
+        headers["Referer"] = referer
     for attempt in range(retries + 1):
         try:
-            request = Request(
-                url,
-                headers={
-                    "User-Agent": USER_AGENT,
-                    "Accept": "text/html,application/xhtml+xml,application/json;q=0.8,*/*;q=0.5",
-                    "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.5",
-                },
-            )
+            request = Request(url, data=body, headers=headers, method="POST" if body is not None else "GET")
             with urlopen(request, timeout=timeout, context=context) as response:
                 raw = response.read(4_000_000)
                 return decode_body(raw, response.headers.get_content_charset())
@@ -404,10 +422,19 @@ def collect_source(source: SourceConfig) -> CollectionResult:
     errors: list[str] = []
     visited: set[str] = set()
     extra_ca_file = ROOT / source["tls_ca_file"] if "tls_ca_file" in source else None
+    post_request = source.get("post_request")
 
     for configured_url in source["urls"]:
         try:
-            document = fetch(configured_url, extra_ca_file=extra_ca_file)
+            if post_request is None:
+                document = fetch(configured_url, extra_ca_file=extra_ca_file)
+            else:
+                document = fetch(
+                    post_request["url"],
+                    extra_ca_file=extra_ca_file,
+                    form_data=post_request["form"],
+                    referer=configured_url,
+                )
             pages.append((configured_url, document))
             visited.add(normalize_url(configured_url))
         except RuntimeError as exc:
@@ -521,6 +548,22 @@ def validate_tls_ca_file(value: Any, source_id: str) -> str:
     return relative.as_posix()
 
 
+def validate_post_request(value: Any, source_id: str, source_urls: list[str]) -> PostRequestConfig:
+    if not isinstance(value, dict) or set(value) != {"url", "form"}:
+        raise ConfigurationError(f"{source_id}.post_request must contain only url and form")
+    if len(source_urls) != 1:
+        raise ConfigurationError(f"{source_id}.post_request requires exactly one display URL")
+    request_url = validate_url(value["url"], f"{source_id}.post_request.url")
+    if not same_site(request_url, source_urls[0]):
+        raise ConfigurationError(f"{source_id}.post_request.url must use the same site as its display URL")
+    form = value["form"]
+    if not isinstance(form, dict) or not form:
+        raise ConfigurationError(f"{source_id}.post_request.form must be a non-empty object")
+    if not all(isinstance(key, str) and key and isinstance(item, str) for key, item in form.items()):
+        raise ConfigurationError(f"{source_id}.post_request.form must map non-empty strings to strings")
+    return {"url": request_url, "form": dict(form)}
+
+
 def load_sources(path: Path | None = None) -> list[SourceConfig]:
     path = path or SOURCES_FILE
     raw = load_json(path, [])
@@ -563,6 +606,8 @@ def load_sources(path: Path | None = None) -> list[SourceConfig]:
             if any(urlsplit(url).scheme != "https" for url in validated_urls):
                 raise ConfigurationError(f"{source_id}.tls_ca_file can only be used with HTTPS URLs")
             source["tls_ca_file"] = validate_tls_ca_file(item["tls_ca_file"], source_id)
+        if "post_request" in item:
+            source["post_request"] = validate_post_request(item["post_request"], source_id, validated_urls)
         sources.append(source)
         seen_ids.add(source_id)
         seen_priorities.add(priority)
