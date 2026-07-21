@@ -2808,7 +2808,7 @@
       "error": null
     },
     "kepco-fms": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "healthy",
       "last_checked": "2026-07-21T05:38:34Z",
@@ -2826,7 +2826,7 @@
       "error": null
     },
     "kra-fm": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "healthy",
       "last_checked": "2026-07-21T05:38:34Z",

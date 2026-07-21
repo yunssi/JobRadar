@@ -215,6 +215,7 @@ class SourceConfig(TypedDict):
     urls: list[str]
     tls_ca_file: NotRequired[str]
     post_request: NotRequired[PostRequestConfig]
+    document_adapter: NotRequired[Literal["applyin_recruit_collection"]]
 
 
 class JobRecord(TypedDict, total=False):
@@ -440,6 +441,49 @@ def adapt_post_response(document: str, adapter: str | None, display_url: str) ->
     return "\n".join(links)
 
 
+def adapt_document_response(document: str, adapter: str | None, display_url: str) -> str:
+    if adapter is None:
+        return document
+    if adapter != "applyin_recruit_collection":
+        raise ConfigurationError(f"Unsupported document adapter: {adapter}")
+
+    match = re.search(
+        r'<script\b(?=[^>]*\bid=(["\'])recruit-collection\1)[^>]*>(.*?)</script\s*>',
+        document,
+        re.IGNORECASE | re.DOTALL,
+    )
+    if match is None:
+        raise JobRadarError("Applyin job page is missing its embedded recruitment data")
+    try:
+        payload = json.loads(match.group(2).strip())
+    except json.JSONDecodeError as exc:
+        raise JobRadarError("Applyin job page returned invalid embedded JSON") from exc
+    if not isinstance(payload, dict) or not isinstance(payload.get("data"), list):
+        raise JobRadarError("Applyin job page returned an invalid recruitment object")
+
+    links = ["<p>채용공고</p>"]
+    for item in payload["data"]:
+        if not isinstance(item, dict):
+            raise JobRadarError("Applyin recruitment data contains an invalid item")
+        status = item.get("status")
+        status_code = status.get("code") if isinstance(status, dict) else None
+        if not isinstance(status_code, str):
+            raise JobRadarError("Applyin recruitment data contains an invalid status")
+        if status_code.strip().lower() not in {"ing", "open", "ongoing"}:
+            continue
+
+        title = item.get("title")
+        item_links = item.get("links")
+        target = item_links.get("jobs.show") if isinstance(item_links, dict) else None
+        if not isinstance(title, str) or not title.strip() or not isinstance(target, str):
+            raise JobRadarError("Applyin recruitment data contains incomplete open-job fields")
+        validate_url(target, "Applyin jobs.show")
+        if not same_site(display_url, target):
+            raise JobRadarError("Applyin recruitment data contains a cross-site job link")
+        links.append(f'<a href="{html.escape(target, quote=True)}">{html.escape(title.strip())}</a>')
+    return "\n".join(links)
+
+
 def normalize_url(url: str) -> str:
     parsed = urlsplit(url)
     query = sorted(
@@ -457,6 +501,11 @@ def same_site(left: str, right: str) -> bool:
     a = urlsplit(left).netloc.lower().removeprefix("www.")
     b = urlsplit(right).netloc.lower().removeprefix("www.")
     return bool(a and b and (a == b or a.endswith("." + b) or b.endswith("." + a)))
+
+
+def is_homepage_url(url: str) -> bool:
+    parsed = urlsplit(url)
+    return parsed.path in {"", "/"} and not parsed.query
 
 
 def is_discovery_link(link: Link, base_url: str) -> bool:
@@ -525,6 +574,7 @@ def collect_source(source: SourceConfig) -> CollectionResult:
     visited: set[str] = set()
     extra_ca_file = ROOT / source["tls_ca_file"] if "tls_ca_file" in source else None
     post_request = source.get("post_request")
+    document_adapter = source.get("document_adapter")
 
     for configured_url in source["urls"]:
         try:
@@ -542,6 +592,7 @@ def collect_source(source: SourceConfig) -> CollectionResult:
                     post_request.get("response_adapter"),
                     configured_url,
                 )
+            document = adapt_document_response(document, document_adapter, configured_url)
             pages.append((configured_url, document))
             visited.add(normalize_url(configured_url))
         except RuntimeError as exc:
@@ -550,7 +601,7 @@ def collect_source(source: SourceConfig) -> CollectionResult:
     # Homepages are allowed in the config. Follow a few same-site recruitment
     # links so a redesign of the navigation is less likely to break monitoring.
     discovered: list[str] = []
-    if any(urlsplit(url).path in {"", "/"} for url in source["urls"]):
+    if any(is_homepage_url(url) for url in source["urls"]):
         for page_url, document in pages:
             for link in extract_links(document):
                 if not is_discovery_link(link, page_url):
@@ -724,6 +775,10 @@ def load_sources(path: Path | None = None) -> list[SourceConfig]:
             source["tls_ca_file"] = validate_tls_ca_file(item["tls_ca_file"], source_id)
         if "post_request" in item:
             source["post_request"] = validate_post_request(item["post_request"], source_id, validated_urls)
+        if "document_adapter" in item:
+            if item["document_adapter"] != "applyin_recruit_collection":
+                raise ConfigurationError(f"{source_id}.document_adapter is unsupported")
+            source["document_adapter"] = item["document_adapter"]
         sources.append(source)
         seen_ids.add(source_id)
         seen_priorities.add(priority)

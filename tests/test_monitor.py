@@ -123,6 +123,10 @@ class MonitorParsingTests(unittest.TestCase):
         )
         self.assertFalse(monitor.is_discovery_link(link, "https://example.com/"))
 
+    def test_root_query_is_treated_as_a_direct_page_not_a_homepage(self) -> None:
+        self.assertTrue(monitor.is_homepage_url("https://example.com/"))
+        self.assertFalse(monitor.is_homepage_url("https://example.com/?contentId=recruit"))
+
     def test_score_prefers_metro_target_and_entry(self) -> None:
         score, tags = monitor.job_score("서울 CCTV 통합관제 신입 계약직 채용")
         self.assertEqual(score, 9)
@@ -186,6 +190,15 @@ class MonitorConfigurationTests(unittest.TestCase):
             loaded = monitor.load_sources(path)
         self.assertEqual(loaded[0]["post_request"]["response_adapter"], "recruiter_jobnotice")
 
+    def test_load_sources_accepts_applyin_document_adapter(self) -> None:
+        sources = make_sources()
+        sources[0]["document_adapter"] = "applyin_recruit_collection"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sources.json"
+            monitor.write_json(path, sources)
+            loaded = monitor.load_sources(path)
+        self.assertEqual(loaded[0]["document_adapter"], "applyin_recruit_collection")
+
     def test_load_sources_rejects_invalid_count_duplicate_and_url(self) -> None:
         cases: list[tuple[str, list[monitor.SourceConfig]]] = []
         too_few = make_sources()[:-1]
@@ -228,6 +241,10 @@ class MonitorConfigurationTests(unittest.TestCase):
             "response_adapter": "unknown",  # type: ignore[typeddict-item]
         }
         cases.append(("invalid response adapter", invalid_adapter))
+
+        invalid_document_adapter = make_sources()
+        invalid_document_adapter[0]["document_adapter"] = "unknown"  # type: ignore[typeddict-item]
+        cases.append(("invalid document adapter", invalid_document_adapter))
 
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "sources.json"
@@ -361,6 +378,47 @@ class MonitorConfigurationTests(unittest.TestCase):
         )
         self.assertEqual(monitor.extract_links(document), [])
         self.assertIn("채용공고", document)
+
+    def test_collect_source_adapts_applyin_embedded_json_and_skips_closed_job(self) -> None:
+        source = make_sources()[0]
+        source["urls"] = ["https://source-1.example.com/built-in/jobs"]
+        source["document_adapter"] = "applyin_recruit_collection"
+        payload = {
+            "data": [
+                {
+                    "id": 42,
+                    "title": "2026년 현장직 영천경마장 수시채용공고",
+                    "status": {"code": "ing", "text": "접수중"},
+                    "links": {"jobs.show": "https://source-1.example.com/jobs/42?v=1.2.0"},
+                },
+                {
+                    "id": 41,
+                    "title": "2026년 서울 현장직 정기채용공고",
+                    "status": {"code": "close", "text": "종료"},
+                    "links": {"jobs.show": "https://source-1.example.com/jobs/41?v=1.2.0"},
+                },
+            ]
+        }
+        response = (
+            '<script type="application/json" id="recruit-collection">'
+            + json.dumps(payload, ensure_ascii=False)
+            + "</script>"
+        )
+        with mock.patch("monitor.fetch", return_value=response):
+            result = monitor.collect_source(source)
+
+        self.assertEqual(len(result.jobs), 1)
+        self.assertEqual(result.jobs[0]["title"], "2026년 현장직 영천경마장 수시채용공고")
+        self.assertEqual(result.jobs[0]["url"], "https://source-1.example.com/jobs/42?v=1.2.0")
+        self.assertTrue(result.has_recruitment_marker)
+
+    def test_applyin_adapter_rejects_missing_embedded_json(self) -> None:
+        with self.assertRaisesRegex(monitor.JobRadarError, "missing its embedded recruitment data"):
+            monitor.adapt_document_response(
+                "<html><p>채용공고</p></html>",
+                "applyin_recruit_collection",
+                "https://example.com/built-in/jobs",
+            )
 
     def test_malformed_state_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

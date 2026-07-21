@@ -1,8 +1,8 @@
 [
   {"id":"lh-es","name":"LH E&S","priority":1,"home":"https://lhes.co.kr/","urls":["https://lhes.co.kr/bbs/board.php?bo_table=emp04_1"]},
-  {"id":"kepco-fms","name":"한전FMS","priority":2,"home":"https://www.kepcofms.co.kr/","urls":["https://www.kepcofms.co.kr/"]},
-  {"id":"kamco-fmc","name":"캠코FMC / 캠코시설관리","priority":3,"home":"https://kamcofmc.co.kr/","urls":["https://kamcofmc.co.kr/"]},
-  {"id":"kra-fm","name":"한국마사회시설관리","priority":4,"home":"https://krafm.co.kr/","urls":["https://krafm.co.kr/"]},
+  {"id":"kepco-fms","name":"한전FMS","priority":2,"home":"https://www.kepcofms.co.kr/","urls":["https://www.kepcofms.co.kr/?contentId=43ec517d68b6edd3015b3edc9a11367b&cate=%EC%A7%84%ED%96%89%EA%B3%B5%EA%B3%A0"]},
+  {"id":"kamco-fmc","name":"캠코FMC / 캠코시설관리","priority":3,"home":"https://kamcofmc.co.kr/","urls":["https://kamcofmc.co.kr/bbs/board.php?bo_table=s4_3"]},
+  {"id":"kra-fm","name":"한국마사회시설관리","priority":4,"home":"https://krafm.co.kr/","urls":["https://krafm.applyin.co.kr/built-in/jobs"],"document_adapter":"applyin_recruit_collection"},
   {"id":"clean-metro","name":"서울메트로환경","priority":5,"home":"http://www.cleanmetro.co.kr/","urls":["http://www.cleanmetro.co.kr/bbs/board.php?bo_table=recruit"]},
   {"id":"smrt-green","name":"서울도시철도그린환경","priority":6,"home":"https://www.smrtg.co.kr/","urls":["https://www.smrtg.co.kr/employment/stffPbanList.do"]},
   {"id":"smrt-engineering","name":"서울도시철도엔지니어링","priority":7,"home":"https://www.smrte.co.kr/","urls":["https://www.smrte.co.kr/resources/careers"]},
@@ -17,6 +17,6 @@
   {"id":"ibk-service","name":"IBK서비스","priority":16,"home":"https://www.ibkservice.co.kr/","urls":["https://www.ibkservice.co.kr/recruit/notice/list"]},
   {"id":"kohom","name":"주택관리공단","priority":17,"home":"https://www.kohom.or.kr/","urls":["https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&page=1&schCon=0"]},
   {"id":"ex-service","name":"한국도로공사서비스","priority":18,"home":"https://www.exservice.co.kr/","urls":["https://www.exservice.co.kr/boad/bd_recruit/egolist.php?bd=1"],"tls_ca_file":"certificates/sectigo-rsa-domain-validation-secure-server-ca.pem"},
-  {"id":"kto-partners","name":"KTO파트너스","priority":19,"home":"http://www.ktopartners.com/","urls":["http://www.ktopartners.com/"]},
-  {"id":"gkl-with","name":"GKLWITH","priority":20,"home":"https://www.gklwith.co.kr/","urls":["https://www.gklwith.co.kr/"]}
+  {"id":"kto-partners","name":"KTO파트너스","priority":19,"home":"http://www.ktopartners.com/","urls":["http://www.ktopartners.com/board/list?bd_id=recruit01"]},
+  {"id":"gkl-with","name":"GKLWITH","priority":20,"home":"https://www.gklwith.co.kr/","urls":["https://www.gklwith.co.kr/board/board_list?code=recruitment"]}
 ]

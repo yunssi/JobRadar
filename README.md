@@ -119,6 +119,7 @@ uv run python monitor.py --dry-run
 코레일네트웍스 채용 목록은 화면을 연 뒤 JavaScript가 별도 POST 요청으로 불러옵니다. 사용자에게
 보여줄 공식 채용 페이지는 `urls`에 두고, 수집용 요청은 같은 사이트의 `post_request`에 정의합니다.
 JSON으로 응답하는 공식 채용 포털은 `response_adapter`로 공고명과 상세 링크를 안전하게 변환합니다.
+페이지 안에 JSON으로 공고를 넣는 채용 포털은 `document_adapter`로 진행 중인 공고를 변환합니다.
 
 GitHub Actions cron은 UTC 기준입니다. `15 21 * * *`는 한국시간 다음 날 오전 6시 15분이며,
 GitHub 실행 상황에 따라 시작이 몇 분 늦어질 수 있습니다.
