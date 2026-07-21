@@ -21,7 +21,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import Any, NotRequired, TypedDict
+from typing import Any, Literal, NotRequired, TypedDict
 from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
@@ -204,6 +204,7 @@ class ConfigurationError(JobRadarError):
 class PostRequestConfig(TypedDict):
     url: str
     form: dict[str, str]
+    response_adapter: NotRequired[Literal["recruiter_jobnotice"]]
 
 
 class SourceConfig(TypedDict):
@@ -251,26 +252,85 @@ class LinkExtractor(HTMLParser):
         self.links: list[Link] = []
         self._href: str | None = None
         self._parts: list[str] = []
+        self._nested: list[tuple[str, list[str]]] = []
+        self._nested_candidates: list[str] = []
+        self._row_href: str | None = None
+        self._row_parts: list[str] = []
+        self._cell_parts: list[str] | None = None
+        self._row_cells: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        if tag.lower() != "a" or self._href is not None:
-            return
+        tag = tag.lower()
         values = {key.lower(): value or "" for key, value in attrs}
-        self._href = values.get("href") or values.get("data-href") or values.get("data-url") or ""
-        self._parts = []
+        if tag == "tr" and self._row_href is None:
+            onclick = values.get("onclick", "")
+            target = re.search(r"(?:window\.)?location(?:\.href)?\s*=\s*(['\"])(.*?)\1", onclick, re.I)
+            if target:
+                self._row_href = target.group(2).strip()
+                self._row_parts = []
+                self._row_cells = []
+        if tag == "td" and self._row_href is not None and self._cell_parts is None:
+            self._cell_parts = []
+        if tag == "a" and self._href is None:
+            self._href = values.get("href") or values.get("data-href") or values.get("data-url") or ""
+            self._parts = []
+            self._nested = []
+            self._nested_candidates = []
+            return
+        if self._href is not None and tag in {"b", "div", "h1", "h2", "h3", "li", "p", "span", "td"}:
+            self._nested.append((tag, []))
 
     def handle_data(self, data: str) -> None:
         if self._href is not None:
             self._parts.append(data)
+            for _, parts in self._nested:
+                parts.append(data)
+        if self._row_href is not None:
+            self._row_parts.append(data)
+        if self._cell_parts is not None:
+            self._cell_parts.append(data)
 
     def handle_endtag(self, tag: str) -> None:
-        if tag.lower() != "a" or self._href is None:
-            return
-        text = clean_text(" ".join(self._parts))
-        if text:
-            self.links.append(Link(text=text, href=self._href.strip()))
-        self._href = None
-        self._parts = []
+        tag = tag.lower()
+        if self._href is not None and tag != "a":
+            for index in range(len(self._nested) - 1, -1, -1):
+                nested_tag, parts = self._nested[index]
+                if nested_tag != tag:
+                    continue
+                del self._nested[index]
+                text = clean_text(" ".join(parts))
+                if text:
+                    self._nested_candidates.append(text)
+                break
+        if tag == "a" and self._href is not None:
+            href = self._href.strip()
+            text = clean_text(" ".join(self._parts))
+            if text:
+                self.links.append(Link(text=text, href=href))
+            for candidate in self._nested_candidates:
+                if candidate and candidate != text:
+                    self.links.append(Link(text=candidate, href=href))
+            self._href = None
+            self._parts = []
+            self._nested = []
+            self._nested_candidates = []
+        if tag == "td" and self._row_href is not None and self._cell_parts is not None:
+            text = clean_text(" ".join(self._cell_parts))
+            if text:
+                self._row_cells.append(text)
+            self._cell_parts = None
+        if tag == "tr" and self._row_href is not None:
+            text = clean_text(" ".join(self._row_parts))
+            closed = bool(self._row_cells and self._row_cells[-1].lower() in {"마감", "접수마감", "종료"})
+            if not closed:
+                for cell in self._row_cells:
+                    self.links.append(Link(text=cell, href=self._row_href))
+                if text and not self._row_cells:
+                    self.links.append(Link(text=text, href=self._row_href))
+            self._row_href = None
+            self._row_parts = []
+            self._cell_parts = None
+            self._row_cells = []
 
 
 def now_iso() -> str:
@@ -336,6 +396,48 @@ def extract_links(document: str) -> list[Link]:
     parser.feed(document)
     parser.close()
     return parser.links
+
+
+def adapt_post_response(document: str, adapter: str | None, display_url: str) -> str:
+    if adapter is None:
+        return document
+    if adapter != "recruiter_jobnotice":
+        raise ConfigurationError(f"Unsupported response adapter: {adapter}")
+    try:
+        payload = json.loads(document)
+    except json.JSONDecodeError as exc:
+        raise JobRadarError("Recruiter job list returned invalid JSON") from exc
+    if not isinstance(payload, dict) or not isinstance(payload.get("list"), list):
+        raise JobRadarError("Recruiter job list returned an invalid object")
+
+    links = ["<p>채용공고</p>"]
+    for item in payload["list"]:
+        if not isinstance(item, dict):
+            raise JobRadarError("Recruiter job list contains an invalid item")
+        receipt_state = item.get("receiptState")
+        if isinstance(receipt_state, str) and receipt_state.strip().lower() in {
+            "마감",
+            "접수마감",
+            "접수종료",
+            "종료",
+        }:
+            continue
+        title = item.get("jobnoticeName")
+        notice_id = item.get("jobnoticeSn")
+        system_code = item.get("systemKindCode")
+        if (
+            not isinstance(title, str)
+            or not title.strip()
+            or not isinstance(notice_id, (str, int))
+            or isinstance(notice_id, bool)
+            or not isinstance(system_code, str)
+            or not system_code
+        ):
+            raise JobRadarError("Recruiter job list contains incomplete fields")
+        query = urlencode({"systemKindCode": system_code, "jobnoticeSn": str(notice_id)})
+        target = urljoin(display_url, f"/app/jobnotice/view?{query}")
+        links.append(f'<a href="{html.escape(target, quote=True)}">{html.escape(title.strip())}</a>')
+    return "\n".join(links)
 
 
 def normalize_url(url: str) -> str:
@@ -435,6 +537,11 @@ def collect_source(source: SourceConfig) -> CollectionResult:
                     form_data=post_request["form"],
                     referer=configured_url,
                 )
+                document = adapt_post_response(
+                    document,
+                    post_request.get("response_adapter"),
+                    configured_url,
+                )
             pages.append((configured_url, document))
             visited.add(normalize_url(configured_url))
         except RuntimeError as exc:
@@ -443,17 +550,18 @@ def collect_source(source: SourceConfig) -> CollectionResult:
     # Homepages are allowed in the config. Follow a few same-site recruitment
     # links so a redesign of the navigation is less likely to break monitoring.
     discovered: list[str] = []
-    for page_url, document in pages:
-        for link in extract_links(document):
-            if not is_discovery_link(link, page_url):
-                continue
-            target = normalize_url(urljoin(page_url, link.href))
-            if target not in visited and target not in discovered:
-                discovered.append(target)
+    if any(urlsplit(url).path in {"", "/"} for url in source["urls"]):
+        for page_url, document in pages:
+            for link in extract_links(document):
+                if not is_discovery_link(link, page_url):
+                    continue
+                target = normalize_url(urljoin(page_url, link.href))
+                if target not in visited and target not in discovered:
+                    discovered.append(target)
+                if len(discovered) >= 4:
+                    break
             if len(discovered) >= 4:
                 break
-        if len(discovered) >= 4:
-            break
 
     for target in discovered:
         try:
@@ -549,8 +657,10 @@ def validate_tls_ca_file(value: Any, source_id: str) -> str:
 
 
 def validate_post_request(value: Any, source_id: str, source_urls: list[str]) -> PostRequestConfig:
-    if not isinstance(value, dict) or set(value) != {"url", "form"}:
-        raise ConfigurationError(f"{source_id}.post_request must contain only url and form")
+    required = {"url", "form"}
+    allowed = {*required, "response_adapter"}
+    if not isinstance(value, dict) or not required.issubset(value) or not set(value).issubset(allowed):
+        raise ConfigurationError(f"{source_id}.post_request must contain url, form, and an optional response_adapter")
     if len(source_urls) != 1:
         raise ConfigurationError(f"{source_id}.post_request requires exactly one display URL")
     request_url = validate_url(value["url"], f"{source_id}.post_request.url")
@@ -561,7 +671,13 @@ def validate_post_request(value: Any, source_id: str, source_urls: list[str]) ->
         raise ConfigurationError(f"{source_id}.post_request.form must be a non-empty object")
     if not all(isinstance(key, str) and key and isinstance(item, str) for key, item in form.items()):
         raise ConfigurationError(f"{source_id}.post_request.form must map non-empty strings to strings")
-    return {"url": request_url, "form": dict(form)}
+    result: PostRequestConfig = {"url": request_url, "form": dict(form)}
+    adapter = value.get("response_adapter")
+    if adapter is not None:
+        if adapter != "recruiter_jobnotice":
+            raise ConfigurationError(f"{source_id}.post_request.response_adapter is unsupported")
+        result["response_adapter"] = adapter
+    return result
 
 
 def load_sources(path: Path | None = None) -> list[SourceConfig]:

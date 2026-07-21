@@ -58,6 +58,37 @@ class MonitorParsingTests(unittest.TestCase):
         self.assertEqual(links[0].text, "2026년 제3차 공무직사원 채용 공고")
         self.assertTrue(monitor.is_job_title(links[0].text))
 
+    def test_extracts_title_element_from_metadata_heavy_anchor(self) -> None:
+        title = "[공고 제2026-16호] 서울메트로환경 공무직 공개채용 공고"
+        document = f"""
+        <a href="/recruit/428">
+          <p>366 <span><b>{title}</b> 서울메트로환경 2026.07.21 10</span></p>
+          <p class="ver2">{title}</p><p>서울메트로환경</p><p>2026.07.21</p>
+        </a>
+        """
+        accepted = [link for link in monitor.extract_links(document) if monitor.is_job_title(link.text)]
+        self.assertIn(monitor.Link(text=title, href="/recruit/428"), accepted)
+
+    def test_extracts_title_cell_from_clickable_table_row_without_duplicate(self) -> None:
+        title = "[산은비즈] 정규직 채용공고(시설)"
+        document = f"""
+        <table><tr onclick="window.location='/recruit/view?UID=622'">
+          <td>603</td><td>시설관리</td><td>산업은행 본점</td>
+          <td>{title}</td><td>2026-07-31</td><td>접수중</td>
+        </tr></table>
+        """
+        accepted = [link for link in monitor.extract_links(document) if monitor.is_job_title(link.text)]
+        self.assertEqual(accepted, [monitor.Link(text=title, href="/recruit/view?UID=622")])
+
+    def test_skips_closed_clickable_table_row(self) -> None:
+        document = """
+        <table><tr onclick="window.location='/recruit/view?UID=621'">
+          <td>602</td><td>[산은비즈] 정규직 채용공고(시설)</td><td>2026-07-02</td><td>마감</td>
+        </tr></table>
+        """
+        accepted = [link for link in monitor.extract_links(document) if monitor.is_job_title(link.text)]
+        self.assertEqual(accepted, [])
+
     def test_decodes_cp949_pages(self) -> None:
         text = "2026년 시설관리 직원 채용 공고"
         self.assertEqual(monitor.decode_body(text.encode("cp949")), text)
@@ -142,6 +173,19 @@ class MonitorConfigurationTests(unittest.TestCase):
             loaded = monitor.load_sources(path)
         self.assertEqual(loaded[0]["post_request"]["form"]["actionType"], "005")
 
+    def test_load_sources_accepts_recruiter_response_adapter(self) -> None:
+        sources = make_sources()
+        sources[0]["post_request"] = {
+            "url": "https://source-1.example.com/app/jobnotice/list.json",
+            "form": {"currentPage": "1"},
+            "response_adapter": "recruiter_jobnotice",
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sources.json"
+            monitor.write_json(path, sources)
+            loaded = monitor.load_sources(path)
+        self.assertEqual(loaded[0]["post_request"]["response_adapter"], "recruiter_jobnotice")
+
     def test_load_sources_rejects_invalid_count_duplicate_and_url(self) -> None:
         cases: list[tuple[str, list[monitor.SourceConfig]]] = []
         too_few = make_sources()[:-1]
@@ -176,6 +220,14 @@ class MonitorConfigurationTests(unittest.TestCase):
             "form": {"actionType": 5},  # type: ignore[dict-item]
         }
         cases.append(("invalid POST form", invalid_post_form))
+
+        invalid_adapter = make_sources()
+        invalid_adapter[0]["post_request"] = {
+            "url": "https://source-1.example.com/data",
+            "form": {"currentPage": "1"},
+            "response_adapter": "unknown",  # type: ignore[typeddict-item]
+        }
+        cases.append(("invalid response adapter", invalid_adapter))
 
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "sources.json"
@@ -254,6 +306,61 @@ class MonitorConfigurationTests(unittest.TestCase):
         )
         self.assertEqual(len(result.jobs), 1)
         self.assertEqual(result.jobs[0]["url"], source["urls"][0])
+
+    def test_collect_source_adapts_recruiter_json_to_job_link(self) -> None:
+        source = make_sources()[0]
+        source["urls"] = ["https://source-1.example.com/app/jobnotice/list"]
+        source["post_request"] = {
+            "url": "https://source-1.example.com/app/jobnotice/list.json",
+            "form": {"currentPage": "1"},
+            "response_adapter": "recruiter_jobnotice",
+        }
+        response = json.dumps(
+            {
+                "list": [
+                    {
+                        "jobnoticeName": "코레일네트웍스 2026년 하반기 공개채용",
+                        "jobnoticeSn": 42,
+                        "systemKindCode": "MRS2",
+                    }
+                ]
+            }
+        )
+        with mock.patch("monitor.fetch", return_value=response):
+            result = monitor.collect_source(source)
+
+        self.assertEqual(len(result.jobs), 1)
+        self.assertEqual(result.jobs[0]["title"], "코레일네트웍스 2026년 하반기 공개채용")
+        self.assertEqual(
+            result.jobs[0]["url"],
+            "https://source-1.example.com/app/jobnotice/view?jobnoticeSn=42&systemKindCode=MRS2",
+        )
+        self.assertTrue(result.has_recruitment_marker)
+
+    def test_recruiter_adapter_rejects_malformed_response(self) -> None:
+        with self.assertRaisesRegex(monitor.JobRadarError, "invalid JSON"):
+            monitor.adapt_post_response("not-json", "recruiter_jobnotice", "https://example.com/jobs")
+
+    def test_recruiter_adapter_skips_closed_job(self) -> None:
+        response = json.dumps(
+            {
+                "list": [
+                    {
+                        "jobnoticeName": "코레일네트웍스 2026년 상반기 수시채용",
+                        "jobnoticeSn": 42,
+                        "systemKindCode": "MRS2",
+                        "receiptState": "접수마감",
+                    }
+                ]
+            }
+        )
+        document = monitor.adapt_post_response(
+            response,
+            "recruiter_jobnotice",
+            "https://example.com/app/jobnotice/list",
+        )
+        self.assertEqual(monitor.extract_links(document), [])
+        self.assertIn("채용공고", document)
 
     def test_malformed_state_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

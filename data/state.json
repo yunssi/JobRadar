@@ -2835,7 +2835,7 @@
       "error": null
     },
     "clean-metro": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "degraded",
       "last_checked": "2026-07-21T05:38:34Z",
@@ -2925,7 +2925,7 @@
       "error": "https://www.korailnetworks.com/kn/2021/sub06/sub06100.jsp: URLError: <urlopen error timed out>"
     },
     "kdb-biz": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "degraded",
       "last_checked": "2026-07-21T05:38:34Z",
