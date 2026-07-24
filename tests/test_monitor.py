@@ -342,6 +342,15 @@ class MonitorConfigurationTests(unittest.TestCase):
             loaded = monitor.load_sources(path)
         self.assertEqual(loaded[0]["document_adapter"], "swr_job_board")
 
+    def test_load_sources_accepts_saramin_document_adapter(self) -> None:
+        sources = make_sources()
+        sources[0]["document_adapter"] = "saramin_current_company"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sources.json"
+            monitor.write_json(path, sources)
+            loaded = monitor.load_sources(path)
+        self.assertEqual(loaded[0]["document_adapter"], "saramin_current_company")
+
     def test_load_sources_accepts_deadline_filters(self) -> None:
         sources = make_sources()
         sources[0]["deadline_filter"] = "last_date"
@@ -617,6 +626,54 @@ class MonitorConfigurationTests(unittest.TestCase):
                 "<html><p>채용공고</p></html>",
                 "applyin_recruit_collection",
                 "https://example.com/built-in/jobs",
+            )
+
+    def test_saramin_adapter_keeps_each_current_job_once_and_skips_closed_jobs(self) -> None:
+        document = """
+        <section class="section_company_info section_recruit_ing">
+          <h2>진행중 공고 <span class="count">1</span></h2>
+          <div id="list_54509675" class="recruit_container list_link recruit">
+            <a href="/job-search/view?rec_idx=54509675&amp;t_content=generic" class="link">
+              <div class="list">
+                <p class="tit">한국산업단지공단 자회사 현장직 채용 공고(영선원)</p>
+                <div class="meta"><span>경남 창원시</span><span>D-2</span></div>
+              </div>
+            </a>
+            <a href="/job-search/view?rec_idx=54509675" title="홈페이지 지원">지원</a>
+          </div>
+        </section>
+        <section class="section_company_info section_recruit_cloased">
+          <div id="list_54403327" class="recruit_container list_link recruit">
+            <a href="/job-search/view?rec_idx=54403327" class="link" style="pointer-events: none">
+              <div class="list">
+                <p class="tit">㈜키콕스파트너스 대표이사 모집 공고</p>
+                <span class="date">마감</span>
+              </div>
+            </a>
+          </div>
+        </section>
+        """
+        adapted = monitor.adapt_document_response(
+            document,
+            "saramin_current_company",
+            "https://m.saramin.co.kr/job-search/company-info-view/recruit?csn=company",
+        )
+        self.assertEqual(
+            monitor.extract_links(adapted),
+            [
+                monitor.Link(
+                    text="한국산업단지공단 자회사 현장직 채용 공고(영선원)",
+                    href="https://m.saramin.co.kr/job-search/view?rec_idx=54509675",
+                )
+            ],
+        )
+
+    def test_saramin_adapter_rejects_a_page_without_the_current_section(self) -> None:
+        with self.assertRaisesRegex(monitor.JobRadarError, "current-recruitment section"):
+            monitor.adapt_document_response(
+                "<html><p>일시적인 안내 페이지</p></html>",
+                "saramin_current_company",
+                "https://m.saramin.co.kr/job-search/company-info-view/recruit?csn=company",
             )
 
     def test_swr_adapter_rewrites_javascript_board_link(self) -> None:

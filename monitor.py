@@ -281,7 +281,9 @@ class SourceConfig(TypedDict):
     detail_deadline_filter: NotRequired[Literal["korean_recruitment_period"]]
     tls_ca_file: NotRequired[str]
     post_request: NotRequired[PostRequestConfig]
-    document_adapter: NotRequired[Literal["applyin_recruit_collection", "swr_job_board"]]
+    document_adapter: NotRequired[
+        Literal["applyin_recruit_collection", "saramin_current_company", "swr_job_board"]
+    ]
 
 
 class JobRecord(TypedDict, total=False):
@@ -444,6 +446,74 @@ class LinkExtractor(HTMLParser):
             self._row_cells = []
 
 
+class SaraminCurrentRecruitParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.links: list[Link] = []
+        self.saw_current_section = False
+        self._in_current_section = False
+        self._section_depth = 0
+        self._container_depth = 0
+        self._href: str | None = None
+        self._title_parts: list[str] = []
+        self._capture_title = False
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        tag = tag.lower()
+        values = {key.lower(): value or "" for key, value in attrs}
+        classes = set(values.get("class", "").split())
+        if tag == "section":
+            if self._in_current_section:
+                self._section_depth += 1
+            elif "section_recruit_ing" in classes:
+                self.saw_current_section = True
+                self._in_current_section = True
+                self._section_depth = 1
+            return
+        if not self._in_current_section:
+            return
+        if tag == "div":
+            if self._container_depth:
+                self._container_depth += 1
+            elif "recruit_container" in classes:
+                self._container_depth = 1
+                self._href = None
+                self._title_parts = []
+                self._capture_title = False
+            return
+        if not self._container_depth:
+            return
+        if tag == "a" and self._href is None and "link" in classes:
+            style = re.sub(r"\s+", "", values.get("style", "")).lower()
+            if "pointer-events:none" not in style:
+                self._href = values.get("href") or None
+        elif tag == "p" and "tit" in classes:
+            self._capture_title = True
+            self._title_parts = []
+
+    def handle_data(self, data: str) -> None:
+        if self._capture_title:
+            self._title_parts.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        tag = tag.lower()
+        if tag == "p" and self._capture_title:
+            self._capture_title = False
+        if tag == "div" and self._container_depth:
+            self._container_depth -= 1
+            if not self._container_depth:
+                title = clean_job_title(" ".join(self._title_parts))
+                if title and self._href:
+                    self.links.append(Link(text=title, href=self._href))
+                self._href = None
+                self._title_parts = []
+                self._capture_title = False
+        if tag == "section" and self._in_current_section:
+            self._section_depth -= 1
+            if not self._section_depth:
+                self._in_current_section = False
+
+
 def now_iso() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
@@ -603,6 +673,31 @@ def adapt_post_response(document: str, adapter: str | None, display_url: str) ->
 def adapt_document_response(document: str, adapter: str | None, display_url: str) -> str:
     if adapter is None:
         return document
+    if adapter == "saramin_current_company":
+        parser = SaraminCurrentRecruitParser()
+        parser.feed(document)
+        parser.close()
+        if not parser.saw_current_section:
+            raise JobRadarError("Saramin company page is missing its current-recruitment section")
+
+        links = ["<p>채용공고</p>"]
+        for link in parser.links:
+            job_url = urljoin(display_url, link.href)
+            query = dict(parse_qsl(urlsplit(job_url).query))
+            recruitment_id = query.get("rec_idx")
+            if not recruitment_id or not recruitment_id.isdigit():
+                raise JobRadarError("Saramin current recruitment contains an invalid job link")
+            job_url = urljoin(
+                display_url,
+                f"/job-search/view?{urlencode({'rec_idx': recruitment_id})}",
+            )
+            validate_url(job_url, "Saramin current recruitment")
+            if not same_site(display_url, job_url):
+                raise JobRadarError("Saramin current recruitment contains a cross-site job link")
+            links.append(
+                f'<a href="{html.escape(job_url, quote=True)}">{html.escape(link.text)}</a>'
+            )
+        return "\n".join(links)
     if adapter == "swr_job_board":
         menu_code = dict(parse_qsl(urlsplit(display_url).query)).get("menu_cd", "C0003")
         view_url = urljoin(display_url, "job/view.do")
@@ -984,7 +1079,11 @@ def load_sources(path: Path | None = None) -> list[SourceConfig]:
         if "post_request" in item:
             source["post_request"] = validate_post_request(item["post_request"], source_id, validated_urls)
         if "document_adapter" in item:
-            if item["document_adapter"] not in {"applyin_recruit_collection", "swr_job_board"}:
+            if item["document_adapter"] not in {
+                "applyin_recruit_collection",
+                "saramin_current_company",
+                "swr_job_board",
+            }:
                 raise ConfigurationError(f"{source_id}.document_adapter is unsupported")
             source["document_adapter"] = item["document_adapter"]
         if "deadline_filter" in item:

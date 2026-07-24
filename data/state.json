@@ -3481,7 +3481,7 @@
       "error": null
     },
     "sbfm": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "healthy",
       "last_checked": "2026-07-24T14:38:56Z",
@@ -3490,7 +3490,7 @@
       "error": null
     },
     "kibomate": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "healthy",
       "last_checked": "2026-07-24T14:38:56Z",
@@ -3499,7 +3499,7 @@
       "error": null
     },
     "lx-partners": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "degraded",
       "last_checked": "2026-07-24T14:38:56Z",
@@ -3517,7 +3517,7 @@
       "error": "http://kicoxp.com/board.html?board_id=board_recruit: HTTPError: HTTP Error 403: Forbidden"
     },
     "kwater-omc": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "healthy",
       "last_checked": "2026-07-24T14:38:56Z",
@@ -3526,7 +3526,7 @@
       "error": null
     },
     "koworks": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "healthy",
       "last_checked": "2026-07-24T14:38:56Z",
@@ -3535,7 +3535,7 @@
       "error": null
     },
     "kbs-business": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "healthy",
       "last_checked": "2026-07-24T14:38:56Z",
@@ -3553,7 +3553,7 @@
       "error": "https://www.poma.or.kr/poma/employment.do: URLError: <urlopen error [Errno -3] Temporary failure in name resolution>"
     },
     "seoul-water-reclamation": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "healthy",
       "last_checked": "2026-07-24T14:38:56Z",
@@ -3562,7 +3562,7 @@
       "error": null
     },
     "incheon-facilities": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "healthy",
       "last_checked": "2026-07-24T14:38:56Z",
