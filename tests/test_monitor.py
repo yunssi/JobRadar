@@ -299,6 +299,18 @@ class MonitorConfigurationTests(unittest.TestCase):
             "a883559231f8388daf35ce41c8101040ae8fd9b656434247b9475af592cc08ca",
         )
 
+    def test_bundled_sectigo_dv_r36_intermediate_has_expected_fingerprint(self) -> None:
+        path = (
+            monitor.ROOT
+            / "certificates"
+            / "sectigo-public-server-authentication-ca-dv-r36.pem"
+        )
+        der = ssl.PEM_cert_to_DER_cert(path.read_text(encoding="ascii"))
+        self.assertEqual(
+            hashlib.sha256(der).hexdigest(),
+            "8c54c334b66ba4e426772af4a3f9136c19a1aec729fdb28c535c07a5a4ef22e0",
+        )
+
     def test_load_sources_accepts_repo_local_ca_for_https_source(self) -> None:
         sources = make_sources()
         sources[0]["tls_ca_file"] = "certificates/sectigo-rsa-domain-validation-secure-server-ca.pem"
