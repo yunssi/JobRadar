@@ -3548,7 +3548,7 @@
       "error": null
     },
     "lx-partners": {
-      "initialized": true,
+      "initialized": false,
       "ok": true,
       "health": "degraded",
       "last_checked": "2026-07-24T14:57:57Z",

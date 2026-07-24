@@ -229,6 +229,18 @@ class MonitorParsingTests(unittest.TestCase):
         self.assertEqual(monitor.normalize_url(first), "https://example.com/recruit/view.do?nttId=42")
         self.assertEqual(monitor.normalize_url(first), monitor.normalize_url(second))
 
+    def test_url_normalization_preserves_only_hrdms_detail_hash_routes(self) -> None:
+        detail = "https://poma.hrdms.kr/#/recruitment/detail/7"
+        self.assertEqual(monitor.normalize_url(detail), detail)
+        self.assertEqual(
+            monitor.normalize_url("https://poma.hrdms.kr/#section"),
+            "https://poma.hrdms.kr/",
+        )
+        self.assertEqual(
+            monitor.normalize_url("https://example.com/#/recruitment/detail/7"),
+            "https://example.com/",
+        )
+
     def test_parses_korean_recruitment_period_deadlines(self) -> None:
         current = datetime(2026, 7, 24, 23, 0, tzinfo=monitor.KST)
         open_document = """
@@ -350,6 +362,24 @@ class MonitorConfigurationTests(unittest.TestCase):
             monitor.write_json(path, sources)
             loaded = monitor.load_sources(path)
         self.assertEqual(loaded[0]["document_adapter"], "saramin_current_company")
+
+    def test_load_sources_accepts_jobkorea_document_adapter(self) -> None:
+        sources = make_sources()
+        sources[0]["document_adapter"] = "jobkorea_current_company"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sources.json"
+            monitor.write_json(path, sources)
+            loaded = monitor.load_sources(path)
+        self.assertEqual(loaded[0]["document_adapter"], "jobkorea_current_company")
+
+    def test_load_sources_accepts_hrdms_document_adapter(self) -> None:
+        sources = make_sources()
+        sources[0]["document_adapter"] = "hrdms_recruitment_list"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sources.json"
+            monitor.write_json(path, sources)
+            loaded = monitor.load_sources(path)
+        self.assertEqual(loaded[0]["document_adapter"], "hrdms_recruitment_list")
 
     def test_load_sources_accepts_deadline_filters(self) -> None:
         sources = make_sources()
@@ -480,6 +510,17 @@ class MonitorConfigurationTests(unittest.TestCase):
         self.assertEqual(request.data, b"actionType=005&currentPage=1")
         self.assertEqual(request.get_header("Content-type"), "application/x-www-form-urlencoded; charset=UTF-8")
         self.assertEqual(request.get_header("Referer"), "https://example.com/recruit")
+
+    def test_fetch_adds_xhr_header_only_when_requested(self) -> None:
+        response = mock.MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = b"result"
+        response.headers.get_content_charset.return_value = "utf-8"
+        with mock.patch("monitor.urlopen", return_value=response) as opener:
+            monitor.fetch("https://example.com/data", retries=0, xhr=True)
+
+        request = opener.call_args.args[0]
+        self.assertEqual(request.get_header("X-requested-with"), "XMLHttpRequest")
 
     def test_collect_source_uses_extra_ca_only_for_configured_source(self) -> None:
         source = make_sources()[0]
@@ -675,6 +716,205 @@ class MonitorConfigurationTests(unittest.TestCase):
                 "saramin_current_company",
                 "https://m.saramin.co.kr/job-search/company-info-view/recruit?csn=company",
             )
+
+    def test_jobkorea_adapter_keeps_current_jobs_once_and_canonicalizes_links(self) -> None:
+        document = """
+        <div class="recruitList listBx">
+          <ul class="listItem">
+            <li>
+              <a href="/Recruit/GI_Read/49614372?PageGbn=MST&amp;sc=226">
+                <span class="current"><span class="date">D-25</span></span>
+                <span class="tit">한국국토정보공사 영덕지사 환경관리 계약직 모집/한국국토정보공사 자회사</span>
+                <span class="desc">경북 영덕군</span>
+              </a>
+            </li>
+            <li>
+              <a href="/Recruit/GI_Read/49612597?PageGbn=MST">
+                <span class="current">상시채용</span>
+                <span class="tit">한국국토정보공사 거창지사 환경관리 정규직 모집/한국국토정보공사 자회사</span>
+              </a>
+            </li>
+            <li>
+              <a href="/Recruit/GI_Read/49612597?sc=another">
+                <span class="tit">한국국토정보공사 거창지사 환경관리 정규직 모집/한국국토정보공사 자회사</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        """
+        adapted = monitor.adapt_document_response(
+            document,
+            "jobkorea_current_company",
+            "https://m.jobkorea.co.kr/company/45814640/Recruit?Disp_Type=1",
+        )
+        self.assertEqual(
+            monitor.extract_links(adapted),
+            [
+                monitor.Link(
+                    text=(
+                        "한국국토정보공사 영덕지사 환경관리 계약직 모집/"
+                        "한국국토정보공사 자회사"
+                    ),
+                    href="https://m.jobkorea.co.kr/Recruit/GI_Read/49614372",
+                ),
+                monitor.Link(
+                    text=(
+                        "한국국토정보공사 거창지사 환경관리 정규직 모집/"
+                        "한국국토정보공사 자회사"
+                    ),
+                    href="https://m.jobkorea.co.kr/Recruit/GI_Read/49612597",
+                ),
+            ],
+        )
+
+    def test_jobkorea_adapter_accepts_an_empty_current_list(self) -> None:
+        adapted = monitor.adapt_document_response(
+            '<div class="recruitList listBx"><p>진행 중인 채용공고가 없습니다.</p></div>',
+            "jobkorea_current_company",
+            "https://m.jobkorea.co.kr/company/45814640/Recruit?Disp_Type=1",
+        )
+        self.assertEqual(monitor.extract_links(adapted), [])
+        self.assertIn("채용공고", adapted)
+
+    def test_jobkorea_adapter_rejects_missing_or_malformed_current_list(self) -> None:
+        cases = [
+            "<html><p>일시적인 안내 페이지</p></html>",
+            (
+                '<div class="recruitList"><ul><li>'
+                '<a href="/Recruit/GI_Read/not-number"><span class="tit">'
+                "LX파트너스 시설관리 직원 채용</span></a></li></ul></div>"
+            ),
+            (
+                '<div class="recruitList"><ul><li>'
+                '<a href="//evil.example/Recruit/GI_Read/42"><span class="tit">'
+                "LX파트너스 시설관리 직원 채용</span></a></li></ul></div>"
+            ),
+            (
+                '<div class="recruitList"><ul><li>'
+                '<a href="/Recruit/GI_Read/42">지원하기</a></li></ul></div>'
+            ),
+        ]
+        for document in cases:
+            with self.subTest(document=document), self.assertRaises(monitor.JobRadarError):
+                monitor.adapt_document_response(
+                    document,
+                    "jobkorea_current_company",
+                    "https://m.jobkorea.co.kr/company/45814640/Recruit?Disp_Type=1",
+                )
+
+    def test_hrdms_adapter_keeps_only_public_open_recruitments(self) -> None:
+        payload = {
+            "code": 200,
+            "data": [
+                {
+                    "id": "7",
+                    "title": "우체국시설관리단 현장직원 9차 통합 채용 공고",
+                    "recruit_type": "R0",
+                    "deadline_dt_time": "2099-08-03 18:00:00",
+                    "progress_yn": "Y",
+                    "state": "접수중",
+                },
+                {
+                    "id": "6",
+                    "title": "우체국시설관리단 현장직원 8차 통합 채용 공고",
+                    "recruit_type": "R0",
+                    "deadline_dt_time": "2026-07-01 18:00:00",
+                    "progress_yn": "Y",
+                    "state": "접수마감",
+                },
+                {
+                    "id": "5",
+                    "title": "우체국시설관리단 비공개 직원 채용 공고",
+                    "recruit_type": "R2",
+                    "deadline_dt_time": "2099-09-01 18:00:00",
+                    "progress_yn": "Y",
+                    "state": "접수중",
+                },
+                {
+                    "id": "4",
+                    "title": "우체국시설관리단 게시중지 직원 채용 공고",
+                    "recruit_type": "R1",
+                    "deadline_dt_time": "2099-09-01 18:00:00",
+                    "progress_yn": "N",
+                    "state": "접수중",
+                },
+            ],
+        }
+        adapted = monitor.adapt_document_response(
+            json.dumps(payload, ensure_ascii=False),
+            "hrdms_recruitment_list",
+            "https://poma-manage.hrdms.kr/api/front/recruitment/list",
+        )
+        self.assertEqual(
+            monitor.extract_links(
+                adapted,
+                filter_expired=True,
+                today=datetime(2026, 7, 24).date(),
+            ),
+            [
+                monitor.Link(
+                    text="우체국시설관리단 현장직원 9차 통합 채용 공고",
+                    href="https://poma.hrdms.kr/#/recruitment/detail/7",
+                )
+            ],
+        )
+
+    def test_hrdms_adapter_rejects_malformed_responses(self) -> None:
+        valid_item = {
+            "id": "7",
+            "title": "우체국시설관리단 현장직원 9차 통합 채용 공고",
+            "recruit_type": "R0",
+            "deadline_dt_time": "2099-08-03 18:00:00",
+            "progress_yn": "Y",
+            "state": "접수중",
+        }
+        documents = [
+            "not-json",
+            json.dumps({"code": 500, "data": []}),
+            json.dumps({"code": 200, "data": [{**valid_item, "id": "not-an-id"}]}),
+            json.dumps({"code": 200, "data": [{**valid_item, "state": "알 수 없음"}]}),
+            json.dumps({"code": 200, "data": [{**valid_item, "deadline_dt_time": "soon"}]}),
+        ]
+        for document in documents:
+            with self.subTest(document=document), self.assertRaises(monitor.JobRadarError):
+                monitor.adapt_document_response(
+                    document,
+                    "hrdms_recruitment_list",
+                    "https://poma-manage.hrdms.kr/api/front/recruitment/list",
+                )
+
+    def test_collect_source_uses_hrdms_xhr_and_preserves_detail_hash_route(self) -> None:
+        source = make_sources(1)[0]
+        source["home"] = "https://poma.hrdms.kr/#/recruitment/list"
+        source["urls"] = ["https://poma-manage.hrdms.kr/api/front/recruitment/list"]
+        source["deadline_filter"] = "last_date"
+        source["document_adapter"] = "hrdms_recruitment_list"
+        response = json.dumps(
+            {
+                "code": 200,
+                "data": [
+                    {
+                        "id": "7",
+                        "title": "우체국시설관리단 현장직원 9차 통합 채용 공고",
+                        "recruit_type": "R0",
+                        "deadline_dt_time": "2099-08-03 18:00:00",
+                        "progress_yn": "Y",
+                        "state": "접수중",
+                    }
+                ],
+            },
+            ensure_ascii=False,
+        )
+        with mock.patch("monitor.fetch", return_value=response) as fetcher:
+            result = monitor.collect_source(source)
+
+        fetcher.assert_called_once_with(source["urls"][0], extra_ca_file=None, xhr=True)
+        self.assertEqual(result.errors, [])
+        self.assertEqual(len(result.jobs), 1)
+        self.assertEqual(
+            result.jobs[0]["url"],
+            "https://poma.hrdms.kr/#/recruitment/detail/7",
+        )
 
     def test_swr_adapter_rewrites_javascript_board_link(self) -> None:
         document = """

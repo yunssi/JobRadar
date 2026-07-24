@@ -282,7 +282,13 @@ class SourceConfig(TypedDict):
     tls_ca_file: NotRequired[str]
     post_request: NotRequired[PostRequestConfig]
     document_adapter: NotRequired[
-        Literal["applyin_recruit_collection", "saramin_current_company", "swr_job_board"]
+        Literal[
+            "applyin_recruit_collection",
+            "hrdms_recruitment_list",
+            "jobkorea_current_company",
+            "saramin_current_company",
+            "swr_job_board",
+        ]
     ]
 
 
@@ -514,6 +520,106 @@ class SaraminCurrentRecruitParser(HTMLParser):
                 self._in_current_section = False
 
 
+class JobKoreaCurrentRecruitParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.links: list[Link] = []
+        self.saw_recruit_list = False
+        self.malformed_entries = 0
+        self._list_div_depth = 0
+        self._li_depth = 0
+        self._href: str | None = None
+        self._title_parts: list[str] = []
+        self._title_depth = 0
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        tag = tag.lower()
+        values = {key.lower(): value or "" for key, value in attrs}
+        classes = {item.lower() for item in values.get("class", "").split()}
+        if tag == "div":
+            if self._list_div_depth:
+                self._list_div_depth += 1
+            elif "recruitlist" in classes:
+                self.saw_recruit_list = True
+                self._list_div_depth = 1
+                return
+        if not self._list_div_depth:
+            return
+        if tag == "li":
+            if self._li_depth:
+                self._li_depth += 1
+            else:
+                self._li_depth = 1
+                self._href = None
+                self._title_parts = []
+                self._title_depth = 0
+            return
+        if not self._li_depth:
+            return
+        if self._title_depth and tag not in {
+            "area",
+            "base",
+            "br",
+            "col",
+            "embed",
+            "hr",
+            "img",
+            "input",
+            "link",
+            "meta",
+            "param",
+            "source",
+            "track",
+            "wbr",
+        }:
+            self._title_depth += 1
+        elif tag == "span" and "tit" in classes:
+            if self._title_parts:
+                self.malformed_entries += 1
+            self._title_parts = []
+            self._title_depth = 1
+        if tag == "a":
+            href = values.get("href", "").strip()
+            if "/recruit/gi_read/" in href.lower():
+                if self._href is not None and self._href != href:
+                    self.malformed_entries += 1
+                else:
+                    self._href = href
+
+    def handle_data(self, data: str) -> None:
+        if self._title_depth:
+            self._title_parts.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        tag = tag.lower()
+        if tag == "li" and self._li_depth:
+            unclosed_title = bool(self._title_depth)
+            self._li_depth -= 1
+            if self._li_depth:
+                if unclosed_title:
+                    self.malformed_entries += 1
+                return
+            title = clean_job_title(" ".join(self._title_parts))
+            if unclosed_title or bool(title) != bool(self._href):
+                self.malformed_entries += 1
+            elif title and self._href:
+                self.links.append(Link(text=title, href=self._href))
+            self._href = None
+            self._title_parts = []
+            self._title_depth = 0
+            return
+        if self._title_depth:
+            self._title_depth -= 1
+        if tag == "div" and self._list_div_depth:
+            self._list_div_depth -= 1
+            if not self._list_div_depth and self._li_depth:
+                self.malformed_entries += 1
+                self._li_depth = 0
+                self._href = None
+                self._title_parts = []
+                self._title_depth = 0
+
+
 def now_iso() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
@@ -587,6 +693,7 @@ def fetch(
     extra_ca_file: Path | None = None,
     form_data: dict[str, str] | None = None,
     referer: str | None = None,
+    xhr: bool = False,
 ) -> str:
     last_error: Exception | None = None
     context = ssl.create_default_context()
@@ -603,6 +710,8 @@ def fetch(
         headers["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8"
     if referer is not None:
         headers["Referer"] = referer
+    if xhr:
+        headers["X-Requested-With"] = "XMLHttpRequest"
     for attempt in range(retries + 1):
         try:
             request = Request(url, data=body, headers=headers, method="POST" if body is not None else "GET")
@@ -673,15 +782,121 @@ def adapt_post_response(document: str, adapter: str | None, display_url: str) ->
 def adapt_document_response(document: str, adapter: str | None, display_url: str) -> str:
     if adapter is None:
         return document
+    if adapter == "hrdms_recruitment_list":
+        parsed_display_url = urlsplit(display_url)
+        hostname = parsed_display_url.hostname or ""
+        host_match = re.fullmatch(
+            r"([a-z0-9](?:[a-z0-9-]*[a-z0-9])?)-manage\.hrdms\.kr",
+            hostname.lower(),
+        )
+        if (
+            parsed_display_url.scheme.lower() != "https"
+            or parsed_display_url.netloc.lower() != hostname.lower()
+            or host_match is None
+        ):
+            raise JobRadarError("HRDMS recruitment API uses an unexpected host")
+        try:
+            payload = json.loads(document)
+        except json.JSONDecodeError as exc:
+            raise JobRadarError("HRDMS recruitment API returned invalid JSON") from exc
+        if (
+            not isinstance(payload, dict)
+            or str(payload.get("code")) != "200"
+            or not isinstance(payload.get("data"), list)
+        ):
+            raise JobRadarError("HRDMS recruitment API returned an invalid object")
+
+        front_host = f"{host_match.group(1)}.hrdms.kr"
+        links = ["<p>채용공고</p>", "<table>"]
+        for item in payload["data"]:
+            if not isinstance(item, dict):
+                raise JobRadarError("HRDMS recruitment data contains an invalid item")
+            notice_id = item.get("id")
+            if isinstance(notice_id, bool) or not isinstance(notice_id, (str, int)):
+                raise JobRadarError("HRDMS recruitment data contains an invalid id")
+            notice_id = str(notice_id)
+            title = item.get("title")
+            recruit_type = item.get("recruit_type")
+            state = item.get("state")
+            progress = item.get("progress_yn")
+            deadline = item.get("deadline_dt_time")
+            if (
+                re.fullmatch(r"[1-9]\d*", notice_id) is None
+                or not isinstance(title, str)
+                or not title.strip()
+                or recruit_type not in {"R0", "R1", "R2"}
+                or state not in {"접수전", "접수중", "접수마감"}
+                or progress not in {"Y", "N"}
+                or not isinstance(deadline, str)
+            ):
+                raise JobRadarError("HRDMS recruitment data contains invalid fields")
+            try:
+                datetime.strptime(deadline, "%Y-%m-%d %H:%M:%S")
+            except ValueError as exc:
+                raise JobRadarError("HRDMS recruitment data contains an invalid deadline") from exc
+            if state != "접수중" or progress != "Y" or recruit_type == "R2":
+                continue
+            hrdms_target = f"https://{front_host}/#/recruitment/detail/{notice_id}"
+            validate_url(hrdms_target, "HRDMS recruitment detail")
+            links.append(
+                "<tr><td>"
+                f'<a href="{html.escape(hrdms_target, quote=True)}">{html.escape(title.strip())}</a>'
+                "</td>"
+                f"<td>{html.escape(deadline)}</td></tr>"
+            )
+        links.append("</table>")
+        return "\n".join(links)
+    if adapter == "jobkorea_current_company":
+        jobkorea_parser = JobKoreaCurrentRecruitParser()
+        jobkorea_parser.feed(document)
+        jobkorea_parser.close()
+        if not jobkorea_parser.saw_recruit_list:
+            raise JobRadarError("JobKorea company page is missing its current-recruitment list")
+        if jobkorea_parser.malformed_entries:
+            raise JobRadarError("JobKorea current-recruitment list contains malformed entries")
+
+        parsed_display_url = urlsplit(display_url)
+        if (
+            parsed_display_url.scheme.lower() != "https"
+            or parsed_display_url.netloc.lower() != "m.jobkorea.co.kr"
+        ):
+            raise JobRadarError("JobKorea company page uses an unexpected host")
+
+        links = ["<p>채용공고</p>"]
+        seen_ids: set[str] = set()
+        for link in jobkorea_parser.links:
+            jobkorea_url = urljoin(display_url, link.href)
+            parsed_job_url = urlsplit(jobkorea_url)
+            match = re.fullmatch(
+                r"/Recruit/GI_Read/([1-9]\d*)/?",
+                parsed_job_url.path,
+                re.IGNORECASE,
+            )
+            if (
+                parsed_job_url.scheme.lower() != "https"
+                or parsed_job_url.netloc.lower() != "m.jobkorea.co.kr"
+                or match is None
+            ):
+                raise JobRadarError("JobKorea current recruitment contains an invalid job link")
+            recruitment_id = match.group(1)
+            if recruitment_id in seen_ids:
+                continue
+            seen_ids.add(recruitment_id)
+            jobkorea_url = f"https://m.jobkorea.co.kr/Recruit/GI_Read/{recruitment_id}"
+            validate_url(jobkorea_url, "JobKorea current recruitment")
+            links.append(
+                f'<a href="{html.escape(jobkorea_url, quote=True)}">{html.escape(link.text)}</a>'
+            )
+        return "\n".join(links)
     if adapter == "saramin_current_company":
-        parser = SaraminCurrentRecruitParser()
-        parser.feed(document)
-        parser.close()
-        if not parser.saw_current_section:
+        saramin_parser = SaraminCurrentRecruitParser()
+        saramin_parser.feed(document)
+        saramin_parser.close()
+        if not saramin_parser.saw_current_section:
             raise JobRadarError("Saramin company page is missing its current-recruitment section")
 
         links = ["<p>채용공고</p>"]
-        for link in parser.links:
+        for link in saramin_parser.links:
             job_url = urljoin(display_url, link.href)
             query = dict(parse_qsl(urlsplit(job_url).query))
             recruitment_id = query.get("rec_idx")
@@ -742,13 +957,15 @@ def adapt_document_response(document: str, adapter: str | None, display_url: str
 
         title = item.get("title")
         item_links = item.get("links")
-        target = item_links.get("jobs.show") if isinstance(item_links, dict) else None
-        if not isinstance(title, str) or not title.strip() or not isinstance(target, str):
+        applyin_target = item_links.get("jobs.show") if isinstance(item_links, dict) else None
+        if not isinstance(title, str) or not title.strip() or not isinstance(applyin_target, str):
             raise JobRadarError("Applyin recruitment data contains incomplete open-job fields")
-        validate_url(target, "Applyin jobs.show")
-        if not same_site(display_url, target):
+        validate_url(applyin_target, "Applyin jobs.show")
+        if not same_site(display_url, applyin_target):
             raise JobRadarError("Applyin recruitment data contains a cross-site job link")
-        links.append(f'<a href="{html.escape(target, quote=True)}">{html.escape(title.strip())}</a>')
+        links.append(
+            f'<a href="{html.escape(applyin_target, quote=True)}">{html.escape(title.strip())}</a>'
+        )
     return "\n".join(links)
 
 
@@ -763,7 +980,18 @@ def normalize_url(url: str) -> str:
         ),
         key=lambda item: (item[0].lower(), item[1]),
     )
-    return urlunsplit((parsed.scheme.lower(), parsed.netloc.lower(), path, urlencode(query), ""))
+    hostname = (parsed.hostname or "").lower()
+    fragment = ""
+    if (
+        parsed.scheme.lower() == "https"
+        and parsed.netloc.lower() == hostname
+        and hostname.endswith(".hrdms.kr")
+        and re.fullmatch(r"/recruitment/detail/[1-9]\d*", parsed.fragment)
+    ):
+        fragment = parsed.fragment
+    return urlunsplit(
+        (parsed.scheme.lower(), parsed.netloc.lower(), path, urlencode(query), fragment)
+    )
 
 
 def same_site(left: str, right: str) -> bool:
@@ -853,7 +1081,10 @@ def collect_source(source: SourceConfig) -> CollectionResult:
     for configured_url in source["urls"]:
         try:
             if post_request is None:
-                document = fetch(configured_url, extra_ca_file=extra_ca_file)
+                if document_adapter == "hrdms_recruitment_list":
+                    document = fetch(configured_url, extra_ca_file=extra_ca_file, xhr=True)
+                else:
+                    document = fetch(configured_url, extra_ca_file=extra_ca_file)
             else:
                 document = fetch(
                     post_request["url"],
@@ -1081,6 +1312,8 @@ def load_sources(path: Path | None = None) -> list[SourceConfig]:
         if "document_adapter" in item:
             if item["document_adapter"] not in {
                 "applyin_recruit_collection",
+                "hrdms_recruitment_list",
+                "jobkorea_current_company",
                 "saramin_current_company",
                 "swr_job_board",
             }:
