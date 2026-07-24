@@ -21,6 +21,7 @@ const jobs = [
 const sources = [
   {
     id: "one", name: "회사A", priority: 1, home: "https://example.com/one",
+    organization_type: "public_subsidiary", job_fit: "core",
     ok: true, health: "healthy", last_checked: "2026-07-20T00:00:00Z",
     last_success: "2026-07-20T00:00:00Z", found: 1, error: null,
   },
@@ -35,6 +36,17 @@ test("filters by active, recommendation, company, and query", () => {
   assert.deepEqual(filterJobs(jobs, {query: "시설", company: "", recommendedOnly: true, activeOnly: true}), [jobs[0]]);
   assert.deepEqual(filterJobs(jobs, {query: "", company: "two", recommendedOnly: false, activeOnly: false}), [jobs[1]]);
   assert.deepEqual(filterJobs(jobs, {query: "", company: "two", recommendedOnly: false, activeOnly: true}), []);
+});
+
+test("filters by job fit while preserving legacy sources as adjacent", () => {
+  /** @type {Record<string, "core" | "adjacent" | "low">} */
+  const sourceFits = {one: "core", two: "low"};
+  const base = {query: "", company: "", recommendedOnly: false, activeOnly: false, sourceFits};
+  assert.deepEqual(filterJobs(jobs, {...base, jobFit: "preferred"}), [jobs[0]]);
+  assert.deepEqual(filterJobs(jobs, {...base, jobFit: "core"}), [jobs[0]]);
+  assert.deepEqual(filterJobs(jobs, {...base, jobFit: "low"}), [jobs[1]]);
+  assert.deepEqual(filterJobs(jobs, {...base, jobFit: "all"}), jobs);
+  assert.deepEqual(filterJobs([jobs[1]], {...base, sourceFits: {}, jobFit: "preferred"}), [jobs[1]]);
 });
 
 test("daysSince handles invalid and deterministic timestamps", () => {
@@ -55,6 +67,26 @@ test("dashboard validator accepts the production shape", () => {
     jobs,
   });
   assert.equal(data.jobs.length, 2);
+  assert.equal(data.sources[0].organization_type, "public_subsidiary");
+  assert.equal(data.sources[0].job_fit, "core");
+  assert.equal(data.sources[1].organization_type, "public_affiliate");
+  assert.equal(data.sources[1].job_fit, "adjacent");
+});
+
+test("dashboard validator rejects invalid source classifications", () => {
+  const payload = {
+    generated_at: "2026-07-20T00:00:00Z",
+    baseline_ready: true,
+    stats: {total: 2, active_total: 1, new_today: 1, healthy_sources: 1, degraded_sources: 0, failed_sources: 1, source_count: 2},
+    sources: sources.map((source) => ({...source})),
+    jobs,
+  };
+  payload.sources[0].job_fit = "distant";
+  assert.throws(() => validateDashboardData(payload), /job_fit/);
+
+  payload.sources = sources.map((source) => ({...source}));
+  payload.sources[0].organization_type = "private_company";
+  assert.throws(() => validateDashboardData(payload), /organization_type/);
 });
 
 test("dashboard validator rejects unsafe links and inconsistent health totals", () => {

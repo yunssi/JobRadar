@@ -5,6 +5,7 @@ import os
 import ssl
 import tempfile
 import unittest
+from datetime import datetime
 from email.message import Message
 from pathlib import Path
 from unittest import mock
@@ -13,16 +14,18 @@ from urllib.error import HTTPError
 import monitor
 
 
-def make_sources() -> list[monitor.SourceConfig]:
+def make_sources(count: int = 20) -> list[monitor.SourceConfig]:
     return [
         {
             "id": f"source-{priority}",
             "name": f"회사 {priority}",
             "priority": priority,
+            "organization_type": "public_subsidiary",
+            "job_fit": "core",
             "home": f"https://source-{priority}.example.com/",
             "urls": [f"https://source-{priority}.example.com/recruit"],
         }
-        for priority in range(1, monitor.EXPECTED_SOURCE_COUNT + 1)
+        for priority in range(1, count + 1)
     ]
 
 
@@ -89,9 +92,110 @@ class MonitorParsingTests(unittest.TestCase):
         accepted = [link for link in monitor.extract_links(document) if monitor.is_job_title(link.text)]
         self.assertEqual(accepted, [])
 
+    def test_skips_closed_link_inside_table_row(self) -> None:
+        document = """
+        <table><tr>
+          <td><a href="/recruit/view/621">2026년 시설관리 정규직 채용공고</a></td>
+          <td>2026-07-02</td><td>종료</td>
+        </tr></table>
+        """
+        accepted = [link for link in monitor.extract_links(document) if monitor.is_job_title(link.text)]
+        self.assertEqual(accepted, [])
+
+    def test_extracts_only_open_selectin_clickable_row(self) -> None:
+        document = """
+        <table>
+          <tr onclick="go_post('recruitDefault?comp_idx=22&amp;recruit_idx=981')">
+            <td class="tit"><strong>2026년 시설관리 직원 채용 공고</strong></td>
+            <td><span class="status">채용중</span></td>
+          </tr>
+          <tr onclick="go_post('recruitDefault?comp_idx=22&amp;recruit_idx=980')">
+            <td class="tit"><strong>2026년 전기직 직원 채용 공고</strong></td>
+            <td><span class="status">심사중</span></td>
+          </tr>
+        </table>
+        """
+        accepted = [link for link in monitor.extract_links(document) if monitor.is_job_title(link.text)]
+        self.assertEqual(
+            accepted,
+            [
+                monitor.Link(
+                    text="2026년 시설관리 직원 채용 공고",
+                    href="recruitDefault?comp_idx=22&recruit_idx=981",
+                )
+            ],
+        )
+
+    def test_uses_clean_board_title_attribute_and_filters_closed_row(self) -> None:
+        document = """
+        <table>
+          <tr><td><a href="view.php?id=2" title="2026년 시설관리 직원 채용 - 게시물 보기">
+            2026년 시설관리 직원 채용 <span class="row-mobile">관리자 2026-07-24</span>
+          </a></td><td>접수중</td></tr>
+          <tr><td><a href="view.php?id=1" title="2026년 전기직 직원 채용 - 게시물 보기">
+            2026년 전기직 직원 채용 <span>관리자 2026-06-01</span>
+          </a></td><td>마감</td></tr>
+        </table>
+        """
+        accepted = [link for link in monitor.extract_links(document) if monitor.is_job_title(link.text)]
+        self.assertEqual(
+            accepted,
+            [monitor.Link(text="2026년 시설관리 직원 채용", href="view.php?id=2")],
+        )
+
+    def test_deadline_filter_keeps_only_unexpired_table_rows(self) -> None:
+        document = """
+        <table>
+          <tr><td><a href="/open">2026년 9차 시설직원 통합 채용 공고</a></td>
+            <td>2026-07-23</td><td>2026-08-03</td></tr>
+          <tr><td><a href="/closed">2026년 8차 시설직원 통합 채용 공고</a></td>
+            <td>2026.6.23</td><td>2026.7.7</td></tr>
+        </table>
+        """
+        accepted = [
+            link
+            for link in monitor.extract_links(
+                document,
+                filter_expired=True,
+                today=datetime(2026, 7, 24).date(),
+            )
+            if monitor.is_job_title(link.text)
+        ]
+        self.assertEqual(accepted, [monitor.Link(text="2026년 9차 시설직원 통합 채용 공고", href="/open")])
+
+    def test_active_window_filters_old_rows_without_a_deadline(self) -> None:
+        document = """
+        <table>
+          <tr><td><a href="/recent">2026년 시설관리 직원 채용 공고</a></td>
+            <td>2026-07-10</td></tr>
+          <tr><td><a href="/old">2026년 전기직 직원 채용 공고</a></td>
+            <td>2026-06-01</td></tr>
+        </table>
+        """
+        accepted = [
+            link
+            for link in monitor.extract_links(
+                document,
+                active_window_days=30,
+                today=datetime(2026, 7, 24).date(),
+            )
+            if monitor.is_job_title(link.text)
+        ]
+        self.assertEqual(accepted, [monitor.Link(text="2026년 시설관리 직원 채용 공고", href="/recent")])
+
     def test_decodes_cp949_pages(self) -> None:
         text = "2026년 시설관리 직원 채용 공고"
         self.assertEqual(monitor.decode_body(text.encode("cp949")), text)
+
+    def test_cleans_visual_new_badges_and_private_use_icons_from_titles(self) -> None:
+        self.assertEqual(
+            monitor.clean_job_title("새글 2026년 시설관리 직원 채용 공고 \ue149"),
+            "2026년 시설관리 직원 채용 공고",
+        )
+        self.assertEqual(
+            monitor.clean_job_title("2026년 시설관리 직원 채용 공고 new"),
+            "2026년 시설관리 직원 채용 공고",
+        )
 
     def test_rejects_results_and_navigation(self) -> None:
         self.assertFalse(monitor.is_job_title("채용공고"))
@@ -100,6 +204,9 @@ class MonitorParsingTests(unittest.TestCase):
         self.assertFalse(monitor.is_job_title("임직원 사칭으로 인한 사기피해 예방 2026.03.27"))
         self.assertFalse(monitor.is_job_title("[공고 제2026-14호] 외부 심사위원 모집공고"))
         self.assertFalse(monitor.is_job_title("2026년 공개채용 사무직 면접심사 공고"))
+        self.assertFalse(monitor.is_job_title("2026년 시설관리 직원 채용 접수마감"))
+        self.assertFalse(monitor.is_job_title("2026년 직원전용 커뮤니티 채용 안내"))
+        self.assertFalse(monitor.is_job_title("2026년 직원 채용 응시접수 결과(경쟁률) 공지"))
 
     def test_accepts_real_world_variants(self) -> None:
         titles = [
@@ -115,6 +222,25 @@ class MonitorParsingTests(unittest.TestCase):
     def test_url_normalization_keeps_record_id(self) -> None:
         url = "https://example.com/list?page=1&wr_id=42&utm_source=test&sst=hit&main=1"
         self.assertEqual(monitor.normalize_url(url), "https://example.com/list?wr_id=42")
+
+    def test_url_normalization_removes_rotating_jsession_id(self) -> None:
+        first = "https://example.com/recruit/view.do;jsessionid=AAA123?nttId=42&page=1"
+        second = "https://example.com/recruit/view.do;JSESSIONID=BBB999?nttId=42&page=9"
+        self.assertEqual(monitor.normalize_url(first), "https://example.com/recruit/view.do?nttId=42")
+        self.assertEqual(monitor.normalize_url(first), monitor.normalize_url(second))
+
+    def test_parses_korean_recruitment_period_deadlines(self) -> None:
+        current = datetime(2026, 7, 24, 23, 0, tzinfo=monitor.KST)
+        open_document = """
+        <span>접수기간 </span><span>: 2026. 7. 23.(목) ~ 2026. 8. 3.(월)
+        23</span><span>시 59</span><span>분까지</span>
+        """
+        expired_document = "<p>접수기간 : 2026. 07. 13. (월) ~ 2026. 07. 24. (금) 18시까지</p>"
+        inherited_year = "<p>접수기간 : 2026. 6. 26.(금) ~ 7. 8.(수) 18시까지</p>"
+        self.assertTrue(monitor.recruitment_period_is_open(open_document, current=current))
+        self.assertFalse(monitor.recruitment_period_is_open(expired_document, current=current))
+        self.assertFalse(monitor.recruitment_period_is_open(inherited_year, current=current))
+        self.assertIsNone(monitor.recruitment_period_is_open("<p>접수 일정은 첨부파일 참조</p>", current=current))
 
     def test_job_links_are_not_followed_as_discovery_pages(self) -> None:
         link = monitor.Link(
@@ -139,11 +265,11 @@ class MonitorParsingTests(unittest.TestCase):
 
 
 class MonitorConfigurationTests(unittest.TestCase):
-    def test_load_sources_accepts_exactly_twenty_unique_priorities(self) -> None:
+    def test_load_sources_accepts_a_dynamic_contiguous_source_list(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "sources.json"
-            monitor.write_json(path, make_sources())
-            self.assertEqual([source["priority"] for source in monitor.load_sources(path)], list(range(1, 21)))
+            monitor.write_json(path, make_sources(30))
+            self.assertEqual([source["priority"] for source in monitor.load_sources(path)], list(range(1, 31)))
 
     def test_bundled_sectigo_intermediate_has_expected_fingerprint(self) -> None:
         path = monitor.ROOT / "certificates" / "sectigo-rsa-domain-validation-secure-server-ca.pem"
@@ -151,6 +277,14 @@ class MonitorConfigurationTests(unittest.TestCase):
         self.assertEqual(
             hashlib.sha256(der).hexdigest(),
             "7fa4ff68ec04a99d7528d5085f94907f4d1dd1c5381bacdc832ed5c960214676",
+        )
+
+    def test_bundled_globalsign_intermediate_has_expected_fingerprint(self) -> None:
+        path = monitor.ROOT / "certificates" / "globalsign-gcc-r6-alphassl-ca-2025.pem"
+        der = ssl.PEM_cert_to_DER_cert(path.read_text(encoding="ascii"))
+        self.assertEqual(
+            hashlib.sha256(der).hexdigest(),
+            "a883559231f8388daf35ce41c8101040ae8fd9b656434247b9475af592cc08ca",
         )
 
     def test_load_sources_accepts_repo_local_ca_for_https_source(self) -> None:
@@ -199,14 +333,47 @@ class MonitorConfigurationTests(unittest.TestCase):
             loaded = monitor.load_sources(path)
         self.assertEqual(loaded[0]["document_adapter"], "applyin_recruit_collection")
 
-    def test_load_sources_rejects_invalid_count_duplicate_and_url(self) -> None:
+    def test_load_sources_accepts_swr_document_adapter(self) -> None:
+        sources = make_sources()
+        sources[0]["document_adapter"] = "swr_job_board"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sources.json"
+            monitor.write_json(path, sources)
+            loaded = monitor.load_sources(path)
+        self.assertEqual(loaded[0]["document_adapter"], "swr_job_board")
+
+    def test_load_sources_accepts_deadline_filters(self) -> None:
+        sources = make_sources()
+        sources[0]["deadline_filter"] = "last_date"
+        sources[1]["detail_deadline_filter"] = "korean_recruitment_period"
+        sources[2]["active_window_days"] = 30
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sources.json"
+            monitor.write_json(path, sources)
+            loaded = monitor.load_sources(path)
+        self.assertEqual(loaded[0]["deadline_filter"], "last_date")
+        self.assertEqual(loaded[1]["detail_deadline_filter"], "korean_recruitment_period")
+        self.assertEqual(loaded[2]["active_window_days"], 30)
+
+    def test_load_sources_rejects_invalid_metadata_priority_and_url(self) -> None:
         cases: list[tuple[str, list[monitor.SourceConfig]]] = []
-        too_few = make_sources()[:-1]
-        cases.append(("count", too_few))
+        cases.append(("empty", []))
+
+        gapped_priority = make_sources()
+        gapped_priority[-1]["priority"] = 21
+        cases.append(("gapped priority", gapped_priority))
 
         duplicate = make_sources()
         duplicate[1]["id"] = duplicate[0]["id"]
         cases.append(("duplicate", duplicate))
+
+        invalid_organization = make_sources()
+        invalid_organization[0]["organization_type"] = "private"  # type: ignore[typeddict-item]
+        cases.append(("invalid organization type", invalid_organization))
+
+        invalid_fit = make_sources()
+        invalid_fit[0]["job_fit"] = "maybe"  # type: ignore[typeddict-item]
+        cases.append(("invalid job fit", invalid_fit))
 
         invalid_url = make_sources()
         invalid_url[0]["urls"] = ["javascript:alert(1)"]
@@ -245,6 +412,18 @@ class MonitorConfigurationTests(unittest.TestCase):
         invalid_document_adapter = make_sources()
         invalid_document_adapter[0]["document_adapter"] = "unknown"  # type: ignore[typeddict-item]
         cases.append(("invalid document adapter", invalid_document_adapter))
+
+        invalid_deadline_filter = make_sources()
+        invalid_deadline_filter[0]["deadline_filter"] = "first_date"  # type: ignore[typeddict-item]
+        cases.append(("invalid deadline filter", invalid_deadline_filter))
+
+        invalid_detail_deadline_filter = make_sources()
+        invalid_detail_deadline_filter[0]["detail_deadline_filter"] = "guess"  # type: ignore[typeddict-item]
+        cases.append(("invalid detail deadline filter", invalid_detail_deadline_filter))
+
+        invalid_active_window = make_sources()
+        invalid_active_window[0]["active_window_days"] = 0
+        cases.append(("invalid active window", invalid_active_window))
 
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "sources.json"
@@ -303,6 +482,26 @@ class MonitorConfigurationTests(unittest.TestCase):
             source["urls"][0],
             extra_ca_file=monitor.ROOT / source["tls_ca_file"],
         )
+
+    def test_collect_source_filters_certainly_expired_detail_deadline(self) -> None:
+        source = make_sources(1)[0]
+        source["detail_deadline_filter"] = "korean_recruitment_period"
+        listing = """
+        <p>채용공고</p>
+        <a href="/jobs/open">2099년 시설관리 직원 채용 공고</a>
+        <a href="/jobs/closed">2020년 전기직 직원 채용 공고</a>
+        """
+        responses = {
+            source["urls"][0]: listing,
+            f"{source['home']}jobs/open": "<p>접수기간: 2099. 1. 1. ~ 2099. 12. 31.</p>",
+            f"{source['home']}jobs/closed": "<p>접수기간: 2020. 1. 1. ~ 2020. 1. 31.</p>",
+        }
+        with mock.patch("monitor.fetch", side_effect=lambda url, **_: responses[url]):
+            result = monitor.collect_source(source)
+
+        self.assertEqual(result.fetched_pages, 3)
+        self.assertEqual(result.errors, [])
+        self.assertEqual([job["title"] for job in result.jobs], ["2099년 시설관리 직원 채용 공고"])
 
     def test_collect_source_uses_post_response_with_display_page_job_url(self) -> None:
         source = make_sources()[0]
@@ -420,6 +619,30 @@ class MonitorConfigurationTests(unittest.TestCase):
                 "https://example.com/built-in/jobs",
             )
 
+    def test_swr_adapter_rewrites_javascript_board_link(self) -> None:
+        document = """
+        <a href="javascript:goBoardView('5713')" title="2026년 하반기 기능인재 채용공고">
+          2026년 하반기 기능인재 채용공고
+        </a>
+        """
+        adapted = monitor.adapt_document_response(
+            document,
+            "swr_job_board",
+            "https://swr.or.kr/cpage/board/job.do?menu_cd=C0003&srch_input1=00002",
+        )
+        self.assertEqual(
+            monitor.extract_links(adapted),
+            [
+                monitor.Link(
+                    text="2026년 하반기 기능인재 채용공고",
+                    href=(
+                        "https://swr.or.kr/cpage/board/job/view.do"
+                        "?board_gb=job&board_seq=5713&menu_cd=C0003"
+                    ),
+                )
+            ],
+        )
+
     def test_malformed_state_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "state.json"
@@ -472,6 +695,9 @@ class MonitorConfigurationTests(unittest.TestCase):
                 "last_seen": "2026-07-19T00:00:00Z",
                 "baseline": True,
                 "active": False,
+                "source_id": "legacy-source-id",
+                "company": "예전 회사명",
+                "priority": 99,
             }
         )
         duplicate = dict(first)
@@ -503,6 +729,57 @@ class MonitorConfigurationTests(unittest.TestCase):
         self.assertEqual(records[0]["last_seen"], "2026-07-20T00:00:00Z")
         self.assertFalse(records[0]["baseline"])
         self.assertTrue(records[0]["active"])
+        self.assertEqual(records[0]["source_id"], source["id"])
+        self.assertEqual(records[0]["company"], source["name"])
+        self.assertEqual(records[0]["priority"], source["priority"])
+
+    def test_notification_filter_keeps_low_fit_jobs_dashboard_only(self) -> None:
+        sources = make_sources(3)
+        sources[1]["job_fit"] = "adjacent"
+        sources[2]["job_fit"] = "low"
+        jobs = [make_job(source) for source in sources]
+
+        filtered = monitor.notification_jobs(jobs, sources)
+
+        self.assertEqual([job["source_id"] for job in filtered], ["source-1", "source-2"])
+
+    def test_notification_filter_suppresses_explicitly_unsuitable_title(self) -> None:
+        sources = make_sources(1)
+        for title in (
+            "2026년 체험형 청년인턴 채용 공고",
+            "2026년 미래내일 일경험(인턴형) 채용계획 공고",
+            "2026년 생활체육 프로그램 시간강사 채용 공고",
+        ):
+            with self.subTest(title=title):
+                job = make_job(sources[0])
+                job["title"] = title
+                self.assertEqual(monitor.notification_jobs([job], sources), [])
+
+    def test_public_payload_keeps_all_active_jobs_before_inactive_history(self) -> None:
+        source = make_sources(1)[0]
+        state = monitor.default_state()
+        bucket: dict[str, monitor.JobRecord] = {}
+        for index in range(1_100):
+            job = make_job(source, str(index))
+            job.update(
+                {
+                    "first_seen": f"2026-07-20T00:{index % 60:02d}:00Z",
+                    "last_seen": "2026-07-20T00:00:00Z",
+                    "baseline": True,
+                    "active": index < 900,
+                }
+            )
+            bucket[job["id"]] = job
+        state["known"] = {source["id"]: bucket}
+
+        payload = monitor.public_payload(state, [source], "2026-07-21T00:00:00Z", 0)
+
+        self.assertEqual(payload["stats"]["total"], 1_100)
+        self.assertEqual(payload["stats"]["active_total"], 900)
+        self.assertEqual(len(payload["jobs"]), monitor.PUBLIC_JOB_LIMIT)
+        self.assertEqual(sum(job["active"] for job in payload["jobs"]), 900)
+        self.assertEqual(payload["sources"][0]["organization_type"], "public_subsidiary")
+        self.assertEqual(payload["sources"][0]["job_fit"], "core")
 
     def test_partial_telegram_configuration_is_rejected(self) -> None:
         with (
@@ -592,6 +869,37 @@ class MonitorRunTests(unittest.TestCase):
             self.assertEqual(self.run_monitor(), 0)
             notifier.assert_called_once_with([])
 
+    def test_newly_added_source_builds_its_own_quiet_baseline(self) -> None:
+        with (
+            mock.patch("monitor.collect_source", side_effect=lambda source: result_for(source, "current")),
+            mock.patch("monitor.telegram_send", return_value="skipped"),
+        ):
+            self.assertEqual(self.run_monitor(), 0)
+
+        self.sources = make_sources(21)
+        monitor.write_json(self.sources_path, self.sources)
+
+        def after_expansion(source: monitor.SourceConfig) -> monitor.CollectionResult:
+            if source["priority"] == 1:
+                return result_for(source, "current", "new")
+            if source["priority"] == 21:
+                return result_for(source, "existing-a", "existing-b")
+            return result_for(source, "current")
+
+        with (
+            mock.patch("monitor.collect_source", side_effect=after_expansion),
+            mock.patch("monitor.telegram_send", return_value="sent") as notifier,
+        ):
+            self.assertEqual(self.run_monitor(), 0)
+
+        notified = notifier.call_args.args[0]
+        self.assertEqual([job["id"] for job in notified], [make_job(self.sources[0], "new")["id"]])
+        state = json.loads(self.state_path.read_text(encoding="utf-8"))
+        added_jobs = state["known"]["source-21"].values()
+        self.assertTrue(all(job["baseline"] for job in added_jobs))
+        payload = json.loads(self.public_path.read_text(encoding="utf-8"))
+        self.assertEqual(payload["stats"]["source_count"], 21)
+
     def test_notification_failure_leaves_state_and_dashboard_unchanged(self) -> None:
         with (
             mock.patch("monitor.collect_source", side_effect=lambda source: result_for(source, "current")),
@@ -660,7 +968,7 @@ class MonitorRunTests(unittest.TestCase):
         payload = json.loads(self.public_path.read_text(encoding="utf-8"))
         first = payload["sources"][0]
         self.assertEqual(payload["stats"]["failed_sources"], 1)
-        self.assertEqual(payload["stats"]["healthy_sources"], 19)
+        self.assertEqual(payload["stats"]["healthy_sources"], len(self.sources) - 1)
         self.assertEqual(first["health"], "error")
         self.assertIn("blocked", first["error"])
 

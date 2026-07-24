@@ -1,6 +1,20 @@
 // @ts-check
 
 /** @typedef {'healthy' | 'degraded' | 'error'} Health */
+/** @typedef {'public_subsidiary' | 'public_institution' | 'local_public_corporation' | 'public_affiliate'} OrganizationType */
+/** @typedef {'core' | 'adjacent' | 'low'} JobFit */
+/** @typedef {'preferred' | JobFit | 'all'} JobFitFilter */
+
+const ORGANIZATION_TYPES = /** @type {const} */ ([
+  "public_subsidiary",
+  "public_institution",
+  "local_public_corporation",
+  "public_affiliate",
+]);
+const JOB_FITS = /** @type {const} */ (["core", "adjacent", "low"]);
+const JOB_FIT_FILTERS = /** @type {const} */ (["preferred", ...JOB_FITS, "all"]);
+const LEGACY_ORGANIZATION_TYPE = /** @type {OrganizationType} */ ("public_affiliate");
+const LEGACY_JOB_FIT = /** @type {JobFit} */ ("adjacent");
 
 /**
  * @typedef {object} Job
@@ -24,6 +38,8 @@
  * @property {string} name
  * @property {number} priority
  * @property {string} home
+ * @property {OrganizationType} organization_type
+ * @property {JobFit} job_fit
  * @property {boolean} ok
  * @property {Health} health
  * @property {string | null} last_checked
@@ -47,6 +63,8 @@
  * @property {string} company
  * @property {boolean} recommendedOnly
  * @property {boolean} activeOnly
+ * @property {JobFitFilter} [jobFit]
+ * @property {Record<string, JobFit>} [sourceFits]
  */
 
 /** @param {unknown} value @returns {value is Record<string, unknown>} */
@@ -101,6 +119,8 @@ export function validateDashboardData(value) {
   const sourceIds = new Set();
   const sourcePriorities = new Set();
   const sourcesById = new Map();
+  /** @type {Source[]} */
+  const normalizedSources = [];
   const healthCounts = {healthy: 0, degraded: 0, error: 0};
   for (const [index, source] of value.sources.entries()) {
     if (!isRecord(source)) throw new TypeError(`sources[${index}] must be an object`);
@@ -112,6 +132,16 @@ export function validateDashboardData(value) {
     assertNullableString(source.last_checked, `sources[${index}].last_checked`);
     assertNullableString(source.last_success, `sources[${index}].last_success`);
     assertNullableString(source.error, `sources[${index}].error`);
+    const organizationType = source.organization_type === undefined
+      ? LEGACY_ORGANIZATION_TYPE
+      : source.organization_type;
+    const jobFit = source.job_fit === undefined ? LEGACY_JOB_FIT : source.job_fit;
+    if (!ORGANIZATION_TYPES.includes(/** @type {OrganizationType} */ (organizationType))) {
+      throw new TypeError(`sources[${index}].organization_type is invalid`);
+    }
+    if (!JOB_FITS.includes(/** @type {JobFit} */ (jobFit))) {
+      throw new TypeError(`sources[${index}].job_fit is invalid`);
+    }
     if (typeof source.ok !== "boolean") throw new TypeError(`sources[${index}].ok must be boolean`);
     if (!['healthy', 'degraded', 'error'].includes(String(source.health))) {
       throw new TypeError(`sources[${index}].health is invalid`);
@@ -123,7 +153,13 @@ export function validateDashboardData(value) {
     if (sourcePriorities.has(source.priority)) throw new TypeError(`Duplicate source priority: ${source.priority}`);
     sourceIds.add(source.id);
     sourcePriorities.add(source.priority);
-    sourcesById.set(source.id, source);
+    const normalizedSource = /** @type {Source} */ ({
+      ...source,
+      organization_type: organizationType,
+      job_fit: jobFit,
+    });
+    normalizedSources.push(normalizedSource);
+    sourcesById.set(source.id, normalizedSource);
     healthCounts[/** @type {Health} */ (source.health)] += 1;
   }
 
@@ -168,7 +204,10 @@ export function validateDashboardData(value) {
   ) {
     throw new TypeError("dashboard source health counts are inconsistent");
   }
-  return /** @type {DashboardData} */ (value);
+  return /** @type {DashboardData} */ (/** @type {unknown} */ ({
+    ...value,
+    sources: normalizedSources,
+  }));
 }
 
 /** @param {string | null | undefined} value */
@@ -196,13 +235,23 @@ export function daysSince(value, now = Date.now()) {
 /** @param {Job[]} jobs @param {JobFilters} filters */
 export function filterJobs(jobs, filters) {
   const query = filters.query.trim().toLocaleLowerCase("ko-KR");
+  const selectedFit = JOB_FIT_FILTERS.includes(
+    /** @type {JobFitFilter} */ (filters.jobFit),
+  )
+    ? filters.jobFit
+    : "all";
   return jobs.filter((job) => {
     const haystack = `${job.company} ${job.title} ${job.tags.join(" ")}`.toLocaleLowerCase("ko-KR");
+    const sourceFit = filters.sourceFits?.[job.source_id] || LEGACY_JOB_FIT;
+    const matchesFit = selectedFit === "all"
+      || (selectedFit === "preferred" && sourceFit !== "low")
+      || selectedFit === sourceFit;
     return (
       (!query || haystack.includes(query)) &&
       (!filters.company || job.source_id === filters.company) &&
       (!filters.recommendedOnly || job.score >= 3) &&
-      (!filters.activeOnly || job.active)
+      (!filters.activeOnly || job.active) &&
+      matchesFit
     );
   });
 }

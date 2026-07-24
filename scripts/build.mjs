@@ -18,9 +18,8 @@ for (const reference of ["./styles.css", "./app.js", "./core.js", "./data/jobs.j
 }
 
 const data = validateDashboardData(JSON.parse(await readFile(path.join(publicDir, "data", "jobs.json"), "utf8")));
-if (data.sources.length !== 20 || data.stats.source_count !== 20) {
-  throw new Error(`Production build requires exactly 20 sources; found ${data.sources.length}`);
-}
+if (!data.sources.length) throw new Error("Production build requires at least one source");
+if (data.sources.length !== data.stats.source_count) throw new Error("Dashboard source totals are inconsistent");
 if (!data.baseline_ready) throw new Error("Production build requires an initialized baseline");
 
 await rm(distDir, {recursive: true, force: true});

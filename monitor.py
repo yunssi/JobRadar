@@ -18,7 +18,7 @@ import ssl
 import sys
 import time
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime, timedelta, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Literal, NotRequired, TypedDict
@@ -30,8 +30,21 @@ ROOT = Path(__file__).resolve().parent
 SOURCES_FILE = ROOT / "config" / "sources.json"
 STATE_FILE = ROOT / "data" / "state.json"
 PUBLIC_FILE = ROOT / "public" / "data" / "jobs.json"
-EXPECTED_SOURCE_COUNT = 20
 STATE_SCHEMA_VERSION = 2
+PUBLIC_JOB_LIMIT = 1_000
+KST = timezone(timedelta(hours=9))
+
+OrganizationType = Literal[
+    "public_subsidiary",
+    "public_institution",
+    "local_public_corporation",
+    "public_affiliate",
+]
+JobFit = Literal["core", "adjacent", "low"]
+ORGANIZATION_TYPES = frozenset(
+    {"public_subsidiary", "public_institution", "local_public_corporation", "public_affiliate"}
+)
+JOB_FITS = frozenset({"core", "adjacent", "low"})
 
 USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -67,12 +80,17 @@ OUTCOME_WORDS = (
     "인성검사",
     "평가전형",
     "응시현황",
+    "응시접수 결과",
+    "경쟁률",
     "전형 결과",
     "전형결과",
     "친인척",
     "채용비리",
     "임원 초빙",
     "임원 모집",
+    "이사장 모집",
+    "이사장 공모",
+    "이사장",
     "대표이사 공모",
     "비상임",
     "상임이사",
@@ -81,6 +99,8 @@ OUTCOME_WORDS = (
     "직원의소리",
     "직원고충",
     "직원 업무",
+    "직원안내",
+    "직원 안내",
     "임직원 행동강령",
     "임직원 전용",
     "임직원 채용정보",
@@ -92,6 +112,12 @@ OUTCOME_WORDS = (
     "외부 심사위원",
     "심사위원 모집",
     "임직원 사칭",
+    "직원전용",
+    "내부공모",
+    "접수마감",
+    "접수종료",
+    "지원마감",
+    "채용마감",
     "첨부파일",
     "다운로드",
 )
@@ -102,6 +128,9 @@ GENERIC_LABELS = {
     "채용정보",
     "채용안내",
     "인재채용",
+    "직원 채용공고",
+    "기간제근로자 채용공고",
+    "기간제근로자채용공고",
     "인재경영",
     "recruit",
     "recruitment",
@@ -111,6 +140,38 @@ GENERIC_LABELS = {
     "더보기",
     "목록",
 }
+
+CLOSED_STATUSES = frozenset(
+    {
+        "마감",
+        "접수마감",
+        "접수종료",
+        "지원마감",
+        "종료",
+        "심사중",
+        "발표중",
+        "서류심사",
+        "전형중",
+        "채용완료",
+    }
+)
+
+NOTIFICATION_EXCLUDE_WORDS = (
+    "청년인턴",
+    "청년 인턴",
+    "체험형 인턴",
+    "체험형인턴",
+    "만 34세 이하",
+    "경력 3년 이상 필수",
+    "전기안전관리자 선임 필수",
+    "기계설비유지관리자 중급 이상",
+    "비수도권 전용",
+    "위탁강사",
+    "시간강사",
+    "생활체육 프로그램",
+    "미래내일 일경험",
+    "일경험(인턴형)",
+)
 
 DISCOVERY_WORDS = ("채용공고", "채용정보", "인재채용", "recruit", "career", "employment", "job")
 
@@ -211,11 +272,16 @@ class SourceConfig(TypedDict):
     id: str
     name: str
     priority: int
+    organization_type: OrganizationType
+    job_fit: JobFit
     home: str
     urls: list[str]
+    deadline_filter: NotRequired[Literal["last_date"]]
+    active_window_days: NotRequired[int]
+    detail_deadline_filter: NotRequired[Literal["korean_recruitment_period"]]
     tls_ca_file: NotRequired[str]
     post_request: NotRequired[PostRequestConfig]
-    document_adapter: NotRequired[Literal["applyin_recruit_collection"]]
+    document_adapter: NotRequired[Literal["applyin_recruit_collection", "swr_job_board"]]
 
 
 class JobRecord(TypedDict, total=False):
@@ -248,13 +314,25 @@ class Link:
 
 
 class LinkExtractor(HTMLParser):
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        *,
+        filter_expired: bool = False,
+        active_window_days: int | None = None,
+        today: date | None = None,
+    ) -> None:
         super().__init__(convert_charrefs=True)
         self.links: list[Link] = []
+        self._filter_expired = filter_expired
+        self._active_window_days = active_window_days
+        self._today = today or datetime.now(KST).date()
         self._href: str | None = None
+        self._anchor_title = ""
         self._parts: list[str] = []
         self._nested: list[tuple[str, list[str]]] = []
         self._nested_candidates: list[str] = []
+        self._in_row = False
+        self._row_links: list[Link] = []
         self._row_href: str | None = None
         self._row_parts: list[str] = []
         self._cell_parts: list[str] | None = None
@@ -263,17 +341,22 @@ class LinkExtractor(HTMLParser):
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         tag = tag.lower()
         values = {key.lower(): value or "" for key, value in attrs}
-        if tag == "tr" and self._row_href is None:
+        if tag == "tr" and not self._in_row:
+            self._in_row = True
+            self._row_links = []
+            self._row_parts = []
+            self._row_cells = []
             onclick = values.get("onclick", "")
             target = re.search(r"(?:window\.)?location(?:\.href)?\s*=\s*(['\"])(.*?)\1", onclick, re.I)
+            if target is None:
+                target = re.search(r"\bgo_post\(\s*(['\"])(.*?)\1\s*\)", onclick, re.I)
             if target:
                 self._row_href = target.group(2).strip()
-                self._row_parts = []
-                self._row_cells = []
-        if tag == "td" and self._row_href is not None and self._cell_parts is None:
+        if tag == "td" and self._in_row and self._cell_parts is None:
             self._cell_parts = []
         if tag == "a" and self._href is None:
             self._href = values.get("href") or values.get("data-href") or values.get("data-url") or ""
+            self._anchor_title = values.get("title", "")
             self._parts = []
             self._nested = []
             self._nested_candidates = []
@@ -286,7 +369,7 @@ class LinkExtractor(HTMLParser):
             self._parts.append(data)
             for _, parts in self._nested:
                 parts.append(data)
-        if self._row_href is not None:
+        if self._in_row:
             self._row_parts.append(data)
         if self._cell_parts is not None:
             self._cell_parts.append(data)
@@ -306,28 +389,55 @@ class LinkExtractor(HTMLParser):
         if tag == "a" and self._href is not None:
             href = self._href.strip()
             text = clean_text(" ".join(self._parts))
-            if text:
-                self.links.append(Link(text=text, href=href))
-            for candidate in self._nested_candidates:
-                if candidate and candidate != text:
-                    self.links.append(Link(text=candidate, href=href))
+            extracted: list[Link] = []
+            has_board_title = bool(re.search(r"\s*-\s*게시물 보기\s*$", self._anchor_title))
+            title_candidate = clean_text(re.sub(r"\s*-\s*게시물 보기\s*$", "", self._anchor_title))
+            if has_board_title and title_candidate:
+                extracted.append(Link(text=title_candidate, href=href))
+            else:
+                if text:
+                    extracted.append(Link(text=text, href=href))
+                for candidate in self._nested_candidates:
+                    if candidate and candidate != text:
+                        extracted.append(Link(text=candidate, href=href))
+            if self._in_row:
+                self._row_links.extend(extracted)
+            else:
+                self.links.extend(extracted)
             self._href = None
+            self._anchor_title = ""
             self._parts = []
             self._nested = []
             self._nested_candidates = []
-        if tag == "td" and self._row_href is not None and self._cell_parts is not None:
+        if tag == "td" and self._in_row and self._cell_parts is not None:
             text = clean_text(" ".join(self._cell_parts))
             if text:
                 self._row_cells.append(text)
             self._cell_parts = None
-        if tag == "tr" and self._row_href is not None:
+        if tag == "tr" and self._in_row:
             text = clean_text(" ".join(self._row_parts))
-            closed = bool(self._row_cells and self._row_cells[-1].lower() in {"마감", "접수마감", "종료"})
+            closed = any(cell.lower() in CLOSED_STATUSES for cell in self._row_cells)
+            if self._filter_expired or self._active_window_days is not None:
+                dates = re.findall(r"20\d{2}[./-]\d{1,2}[./-]\d{1,2}", text)
+                if dates:
+                    try:
+                        year, month, day = (int(part) for part in re.split(r"[./-]", dates[-1]))
+                        row_date = date(year, month, day)
+                        if self._filter_expired:
+                            closed = closed or row_date < self._today
+                        if self._active_window_days is not None:
+                            closed = closed or row_date < self._today - timedelta(days=self._active_window_days)
+                    except ValueError:
+                        pass
             if not closed:
-                for cell in self._row_cells:
-                    self.links.append(Link(text=cell, href=self._row_href))
-                if text and not self._row_cells:
-                    self.links.append(Link(text=text, href=self._row_href))
+                self.links.extend(self._row_links)
+                if self._row_href is not None:
+                    for cell in self._row_cells:
+                        self.links.append(Link(text=cell, href=self._row_href))
+                    if text and not self._row_cells:
+                        self.links.append(Link(text=text, href=self._row_href))
+            self._in_row = False
+            self._row_links = []
             self._row_href = None
             self._row_parts = []
             self._cell_parts = None
@@ -341,7 +451,14 @@ def now_iso() -> str:
 def clean_text(value: str) -> str:
     value = html.unescape(value or "")
     value = value.replace("\u200b", " ").replace("\xa0", " ")
+    value = re.sub(r"[\ue000-\uf8ff]", " ", value)
     return re.sub(r"\s+", " ", value).strip(" \t\r\n-|•")
+
+
+def clean_job_title(value: str) -> str:
+    title = clean_text(value)
+    title = re.sub(r"^(?:새글|new)\s*", "", title, flags=re.IGNORECASE)
+    return re.sub(r"\s*(?:새글|new)$", "", title, flags=re.IGNORECASE)
 
 
 def decode_body(raw: bytes, declared: str | None = None) -> str:
@@ -353,6 +470,43 @@ def decode_body(raw: bytes, declared: str | None = None) -> str:
         except (UnicodeDecodeError, LookupError):
             pass
     return raw.decode("utf-8", errors="replace")
+
+
+def recruitment_period_is_open(document: str, *, current: datetime | None = None) -> bool | None:
+    """Return False only when a visible Korean application period has certainly expired."""
+    visible = re.sub(
+        r"<(?:script|style)\b[^>]*>.*?</(?:script|style)\s*>",
+        " ",
+        document,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    visible = clean_text(re.sub(r"<[^>]+>", " ", visible))
+    start = r"(20\d{2})\s*(?:[./-]|년)\s*(\d{1,2})\s*(?:[./-]|월)\s*(\d{1,2})\s*(?:[.]|일)?"
+    end = r"(?:(20\d{2})\s*(?:[./-]|년)\s*)?(\d{1,2})\s*(?:[./-]|월)\s*(\d{1,2})\s*(?:[.]|일)?"
+    match = re.search(rf"접수기간\s*:?\s*{start}.*?~\s*{end}", visible, flags=re.IGNORECASE)
+    if match is None:
+        return None
+    start_year, _, _, end_year, end_month, end_day = match.groups()
+    tail = visible[match.end() : match.end() + 80]
+    clock = re.search(r"(\d{1,2})\s*시(?:\s*(\d{1,2})\s*분)?", tail)
+    if clock is None:
+        clock = re.search(r"(\d{1,2})\s*:\s*(\d{1,2})", tail)
+    hour = int(clock.group(1)) if clock else 23
+    minute = int(clock.group(2) or 0) if clock else 59
+    try:
+        deadline = datetime(
+            int(end_year or start_year),
+            int(end_month),
+            int(end_day),
+            hour,
+            minute,
+            59,
+            tzinfo=KST,
+        )
+    except ValueError:
+        return None
+    now = current.astimezone(KST) if current is not None else datetime.now(KST)
+    return deadline >= now
 
 
 def fetch(
@@ -392,8 +546,18 @@ def fetch(
     raise RuntimeError(f"{type(last_error).__name__}: {last_error}")
 
 
-def extract_links(document: str) -> list[Link]:
-    parser = LinkExtractor()
+def extract_links(
+    document: str,
+    *,
+    filter_expired: bool = False,
+    active_window_days: int | None = None,
+    today: date | None = None,
+) -> list[Link]:
+    parser = LinkExtractor(
+        filter_expired=filter_expired,
+        active_window_days=active_window_days,
+        today=today,
+    )
     parser.feed(document)
     parser.close()
     return parser.links
@@ -416,12 +580,7 @@ def adapt_post_response(document: str, adapter: str | None, display_url: str) ->
         if not isinstance(item, dict):
             raise JobRadarError("Recruiter job list contains an invalid item")
         receipt_state = item.get("receiptState")
-        if isinstance(receipt_state, str) and receipt_state.strip().lower() in {
-            "마감",
-            "접수마감",
-            "접수종료",
-            "종료",
-        }:
+        if isinstance(receipt_state, str) and receipt_state.strip().lower() in CLOSED_STATUSES:
             continue
         title = item.get("jobnoticeName")
         notice_id = item.get("jobnoticeSn")
@@ -444,6 +603,20 @@ def adapt_post_response(document: str, adapter: str | None, display_url: str) ->
 def adapt_document_response(document: str, adapter: str | None, display_url: str) -> str:
     if adapter is None:
         return document
+    if adapter == "swr_job_board":
+        menu_code = dict(parse_qsl(urlsplit(display_url).query)).get("menu_cd", "C0003")
+        view_url = urljoin(display_url, "job/view.do")
+
+        def replace_board_link(match: re.Match[str]) -> str:
+            target = f"{view_url}?{urlencode({'board_gb': 'job', 'board_seq': match.group(3), 'menu_cd': menu_code})}"
+            return f'href="{html.escape(target, quote=True)}"'
+
+        return re.sub(
+            r"""href=(["'])javascript:goBoardView\(\s*(["'])(\d+)\2\s*\)\1""",
+            replace_board_link,
+            document,
+            flags=re.IGNORECASE,
+        )
     if adapter != "applyin_recruit_collection":
         raise ConfigurationError(f"Unsupported document adapter: {adapter}")
 
@@ -486,6 +659,7 @@ def adapt_document_response(document: str, adapter: str | None, display_url: str
 
 def normalize_url(url: str) -> str:
     parsed = urlsplit(url)
+    path = re.sub(r";jsessionid=[^/?#;]*", "", parsed.path, flags=re.IGNORECASE)
     query = sorted(
         (
             (key, value)
@@ -494,7 +668,7 @@ def normalize_url(url: str) -> str:
         ),
         key=lambda item: (item[0].lower(), item[1]),
     )
-    return urlunsplit((parsed.scheme.lower(), parsed.netloc.lower(), parsed.path, urlencode(query), ""))
+    return urlunsplit((parsed.scheme.lower(), parsed.netloc.lower(), path, urlencode(query), ""))
 
 
 def same_site(left: str, right: str) -> bool:
@@ -575,6 +749,11 @@ def collect_source(source: SourceConfig) -> CollectionResult:
     extra_ca_file = ROOT / source["tls_ca_file"] if "tls_ca_file" in source else None
     post_request = source.get("post_request")
     document_adapter = source.get("document_adapter")
+    filter_expired = source.get("deadline_filter") == "last_date"
+    active_window_days = source.get("active_window_days")
+    verify_detail_deadline = source.get("detail_deadline_filter") == "korean_recruitment_period"
+    detail_deadline_cache: dict[str, bool | None] = {}
+    detail_pages = 0
 
     for configured_url in source["urls"]:
         try:
@@ -603,7 +782,11 @@ def collect_source(source: SourceConfig) -> CollectionResult:
     discovered: list[str] = []
     if any(is_homepage_url(url) for url in source["urls"]):
         for page_url, document in pages:
-            for link in extract_links(document):
+            for link in extract_links(
+                document,
+                filter_expired=filter_expired,
+                active_window_days=active_window_days,
+            ):
                 if not is_discovery_link(link, page_url):
                     continue
                 target = normalize_url(urljoin(page_url, link.href))
@@ -623,8 +806,12 @@ def collect_source(source: SourceConfig) -> CollectionResult:
 
     candidates: dict[str, JobRecord] = {}
     for page_url, document in pages:
-        for link in extract_links(document):
-            title = clean_text(link.text)
+        for link in extract_links(
+            document,
+            filter_expired=filter_expired,
+            active_window_days=active_window_days,
+        ):
+            title = clean_job_title(link.text)
             if not is_job_title(title):
                 continue
             raw_href = link.href
@@ -635,6 +822,19 @@ def collect_source(source: SourceConfig) -> CollectionResult:
             if not job_url.startswith(("http://", "https://")):
                 job_url = page_url
             job_url = normalize_url(job_url)
+            if verify_detail_deadline:
+                if job_url not in detail_deadline_cache:
+                    try:
+                        detail = fetch(job_url, extra_ca_file=extra_ca_file)
+                        detail_pages += 1
+                        detail_deadline_cache[job_url] = recruitment_period_is_open(detail)
+                        if detail_deadline_cache[job_url] is None:
+                            errors.append(f"{job_url}: recruitment period was not recognized")
+                    except RuntimeError as exc:
+                        detail_deadline_cache[job_url] = None
+                        errors.append(f"{job_url}: deadline check failed: {exc}")
+                if detail_deadline_cache[job_url] is False:
+                    continue
             score, tags = job_score(title)
             key = fingerprint(source["id"], title, job_url)
             candidates[key] = {
@@ -653,7 +853,7 @@ def collect_source(source: SourceConfig) -> CollectionResult:
     return CollectionResult(
         jobs=list(candidates.values()),
         errors=errors,
-        fetched_pages=len(pages),
+        fetched_pages=len(pages) + detail_pages,
         has_recruitment_marker=has_recruitment_marker,
     )
 
@@ -736,8 +936,8 @@ def load_sources(path: Path | None = None) -> list[SourceConfig]:
     raw = load_json(path, [])
     if not isinstance(raw, list):
         raise ConfigurationError("config/sources.json must contain a JSON array")
-    if len(raw) != EXPECTED_SOURCE_COUNT:
-        raise ConfigurationError(f"Expected {EXPECTED_SOURCE_COUNT} monitored sources, found {len(raw)}")
+    if not raw:
+        raise ConfigurationError("config/sources.json must define at least one monitored source")
 
     sources: list[SourceConfig] = []
     seen_ids: set[str] = set()
@@ -748,6 +948,8 @@ def load_sources(path: Path | None = None) -> list[SourceConfig]:
         source_id = item.get("id")
         name = item.get("name")
         priority = item.get("priority")
+        organization_type = item.get("organization_type")
+        job_fit = item.get("job_fit")
         urls = item.get("urls")
         if not isinstance(source_id, str) or not re.fullmatch(r"[a-z0-9][a-z0-9-]*", source_id):
             raise ConfigurationError(f"Source #{index + 1} has an invalid id")
@@ -759,6 +961,10 @@ def load_sources(path: Path | None = None) -> list[SourceConfig]:
             raise ConfigurationError(f"Source {source_id} has an invalid priority")
         if priority in seen_priorities:
             raise ConfigurationError(f"Duplicate source priority: {priority}")
+        if organization_type not in ORGANIZATION_TYPES:
+            raise ConfigurationError(f"Source {source_id} has an invalid organization_type")
+        if job_fit not in JOB_FITS:
+            raise ConfigurationError(f"Source {source_id} has an invalid job_fit")
         if not isinstance(urls, list) or not urls:
             raise ConfigurationError(f"Source {source_id} must define at least one URL")
         validated_urls = [validate_url(url, f"{source_id}.urls") for url in urls]
@@ -766,6 +972,8 @@ def load_sources(path: Path | None = None) -> list[SourceConfig]:
             "id": source_id,
             "name": name.strip(),
             "priority": priority,
+            "organization_type": organization_type,
+            "job_fit": job_fit,
             "home": validate_url(item.get("home"), f"{source_id}.home"),
             "urls": validated_urls,
         }
@@ -776,15 +984,32 @@ def load_sources(path: Path | None = None) -> list[SourceConfig]:
         if "post_request" in item:
             source["post_request"] = validate_post_request(item["post_request"], source_id, validated_urls)
         if "document_adapter" in item:
-            if item["document_adapter"] != "applyin_recruit_collection":
+            if item["document_adapter"] not in {"applyin_recruit_collection", "swr_job_board"}:
                 raise ConfigurationError(f"{source_id}.document_adapter is unsupported")
             source["document_adapter"] = item["document_adapter"]
+        if "deadline_filter" in item:
+            if item["deadline_filter"] != "last_date":
+                raise ConfigurationError(f"{source_id}.deadline_filter is unsupported")
+            source["deadline_filter"] = item["deadline_filter"]
+        if "active_window_days" in item:
+            active_window_days = item["active_window_days"]
+            if (
+                not isinstance(active_window_days, int)
+                or isinstance(active_window_days, bool)
+                or not 1 <= active_window_days <= 365
+            ):
+                raise ConfigurationError(f"{source_id}.active_window_days must be an integer from 1 to 365")
+            source["active_window_days"] = active_window_days
+        if "detail_deadline_filter" in item:
+            if item["detail_deadline_filter"] != "korean_recruitment_period":
+                raise ConfigurationError(f"{source_id}.detail_deadline_filter is unsupported")
+            source["detail_deadline_filter"] = item["detail_deadline_filter"]
         sources.append(source)
         seen_ids.add(source_id)
         seen_priorities.add(priority)
 
-    if seen_priorities != set(range(1, EXPECTED_SOURCE_COUNT + 1)):
-        raise ConfigurationError("Source priorities must be exactly 1 through 20")
+    if seen_priorities != set(range(1, len(sources) + 1)):
+        raise ConfigurationError(f"Source priorities must be exactly 1 through {len(sources)}")
     return sorted(sources, key=lambda source: source["priority"])
 
 
@@ -905,6 +1130,9 @@ def reconcile_state(state: dict[str, Any], sources: list[SourceConfig]) -> tuple
             normalized_id = fingerprint(source_id, job["title"], job["url"])
             candidate = copy.deepcopy(job)
             candidate["id"] = normalized_id
+            candidate["source_id"] = source_id
+            candidate["company"] = source["name"]
+            candidate["priority"] = source["priority"]
             existing = normalized_bucket.get(normalized_id)
             if existing is None:
                 normalized_bucket[normalized_id] = candidate
@@ -946,6 +1174,8 @@ def public_payload(
                 "id": source["id"],
                 "name": source["name"],
                 "priority": source["priority"],
+                "organization_type": source["organization_type"],
+                "job_fit": source["job_fit"],
                 "home": source["home"],
                 "ok": is_healthy,
                 "health": health,
@@ -961,6 +1191,14 @@ def public_payload(
         jobs.extend(source_jobs.values())
     jobs.sort(key=lambda item: (item.get("first_seen", ""), -item.get("priority", 99)), reverse=True)
     active_total = sum(bool(job.get("active")) for job in jobs)
+    inactive_budget = max(0, PUBLIC_JOB_LIMIT - active_total)
+    visible_jobs: list[JobRecord] = []
+    for job in jobs:
+        if job.get("active"):
+            visible_jobs.append(job)
+        elif inactive_budget:
+            visible_jobs.append(job)
+            inactive_budget -= 1
 
     return {
         "generated_at": scan_time,
@@ -975,8 +1213,19 @@ def public_payload(
             "source_count": len(sources),
         },
         "sources": source_rows,
-        "jobs": jobs[:750],
+        "jobs": visible_jobs,
     }
+
+
+def notification_jobs(new_jobs: list[JobRecord], sources: list[SourceConfig]) -> list[JobRecord]:
+    """Keep low-fit and explicitly unsuitable jobs visible without noisy alerts."""
+    fit_by_source = {source["id"]: source["job_fit"] for source in sources}
+    return [
+        job
+        for job in new_jobs
+        if fit_by_source.get(job["source_id"]) != "low"
+        and not any(word.lower() in job["title"].lower() for word in NOTIFICATION_EXCLUDE_WORDS)
+    ]
 
 
 def telegram_send(new_jobs: list[JobRecord]) -> str:
@@ -1142,7 +1391,7 @@ def run(
             print(f"  {label} {source['priority']:>2}. {source['name']}: {len(result.jobs)} candidates")
         except ConfigurationError:
             raise
-        except Exception as exc:  # one broken company must not stop the other 19
+        except Exception as exc:  # one broken company must not stop the other sources
             state["source_status"][source_id] = {
                 "initialized": source_initialized,
                 "ok": False,
@@ -1169,13 +1418,19 @@ def run(
         print(f"Baseline reset: {baseline_count} existing records will not trigger alerts")
 
     payload = public_payload(state, sources, scan_time, len(new_jobs))
+    jobs_to_notify = notification_jobs(new_jobs, sources)
+    if len(jobs_to_notify) != len(new_jobs):
+        print(
+            f"Notification filter: {len(new_jobs) - len(jobs_to_notify)} "
+            "low-fit or excluded job(s) kept dashboard-only"
+        )
     if dry_run:
         print("Dry run: state, dashboard, and notifications were not changed.")
     else:
         # Notify before persisting the new fingerprints. If delivery fails, the
         # state remains unchanged and the next run retries rather than silently
         # losing the alert. This deliberately provides at-least-once delivery.
-        notification_result = telegram_send(new_jobs)
+        notification_result = telegram_send(jobs_to_notify)
         write_json(state_path, state)
         write_json(public_path, payload)
         print(notification_result)

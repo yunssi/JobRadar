@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="수도권 공공기관 자회사 채용공고 모니터" />
+    <meta name="description" content="수도권 공공계열 시설·운영 채용공고 모니터" />
     <meta name="theme-color" content="#152a24" />
     <meta name="referrer" content="no-referrer" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
@@ -23,7 +23,7 @@
         <div>
           <p class="eyebrow">PUBLIC SERVICE CAREER WATCH</p>
           <h1>좋은 공고를<br /><em>놓치지 않는</em> 습관.</h1>
-          <p class="hero-copy">수도권 공공기관 자회사 20곳의 채용 게시판을 매일 확인합니다. 새로 발견한 공고와 전환 가능성이 높은 직무를 한곳에서 보세요.</p>
+          <p id="hero-copy" class="hero-copy">수도권 공공계열 채용 게시판을 매일 확인합니다. 새로 발견한 공고와 전환 가능성이 높은 직무를 한곳에서 보세요.</p>
         </div>
         <div class="scan-card" aria-live="polite">
           <span class="pulse" aria-hidden="true"></span>
@@ -42,11 +42,18 @@
       <section class="jobs-section" aria-labelledby="jobs-title">
         <div class="section-heading">
           <div><p class="eyebrow dark">LATEST OPENINGS</p><h2 id="jobs-title">발견된 채용공고</h2></div>
-          <p id="result-count" class="result-count">불러오는 중</p>
+          <p id="result-count" class="result-count" aria-live="polite">불러오는 중</p>
         </div>
         <div class="controls" role="search">
           <label class="search-box"><span class="sr-only">공고 검색</span><input id="search" type="search" placeholder="회사명·직무·지역 검색" autocomplete="off" /></label>
           <label><span class="sr-only">회사 선택</span><select id="company-filter"><option value="">전체 회사</option></select></label>
+          <label><span class="sr-only">직무 적합도 선택</span><select id="job-fit-filter">
+            <option value="preferred">핵심·보조 직무</option>
+            <option value="core">핵심 직무만</option>
+            <option value="adjacent">보조 직무만</option>
+            <option value="low">낮은 적합도만</option>
+            <option value="all">모든 적합도</option>
+          </select></label>
           <label class="check-filter"><input id="active-only" type="checkbox" checked /><span>현재 게시판만</span></label>
           <label class="check-filter"><input id="recommended-only" type="checkbox" /><span>추천 공고만</span></label>
         </div>
@@ -56,10 +63,10 @@
 
       <section id="sources" class="sources-section" aria-labelledby="sources-title">
         <div class="section-heading">
-          <div><p class="eyebrow dark">SOURCE HEALTH</p><h2 id="sources-title">20개 회사 감시 현황</h2></div>
+          <div><p class="eyebrow dark">SOURCE HEALTH</p><h2 id="sources-title">회사 감시 현황</h2></div>
           <p>오류가 난 회사가 있어도 나머지 감시는 계속됩니다.</p>
         </div>
-        <div id="source-grid" class="source-grid"></div>
+        <div id="source-grid" class="source-groups"></div>
       </section>
     </main>
 

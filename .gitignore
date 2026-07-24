@@ -22,6 +22,7 @@
 .DS_Store
 *.pem
 !certificates/sectigo-rsa-domain-validation-secure-server-ca.pem
+!certificates/globalsign-gcc-r6-alphassl-ca-2025.pem
 
 # debug
 npm-debug.log*
