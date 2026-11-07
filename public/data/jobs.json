@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-06T01:30:13Z",
+  "generated_at": "2026-11-07T00:52:45Z",
   "baseline_ready": true,
   "stats": {
-    "total": 409,
-    "active_total": 130,
-    "new_today": 17,
+    "total": 412,
+    "active_total": 133,
+    "new_today": 3,
     "healthy_sources": 29,
     "degraded_sources": 1,
     "failed_sources": 0,
@@ -20,8 +20,8 @@
       "home": "https://lhes.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 13,
       "error": null
     },
@@ -34,8 +34,8 @@
       "home": "https://www.kepcofms.co.kr/",
       "ok": true,
       "health": "degraded",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": "Recruitment markers were not found in fetched pages"
     },
@@ -48,8 +48,8 @@
       "home": "https://kamcofmc.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 15,
       "error": null
     },
@@ -62,8 +62,8 @@
       "home": "https://krafm.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": null
     },
@@ -76,8 +76,8 @@
       "home": "http://www.cleanmetro.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": null
     },
@@ -90,8 +90,8 @@
       "home": "https://www.smrtg.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 28,
       "error": null
     },
@@ -104,8 +104,8 @@
       "home": "https://www.smrte.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 1,
       "error": null
     },
@@ -118,8 +118,8 @@
       "home": "https://www.kacas.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 6,
       "error": null
     },
@@ -132,8 +132,8 @@
       "home": "https://www.airportos.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": null
     },
@@ -146,8 +146,8 @@
       "home": "https://www.airportfc.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 1,
       "error": null
     },
@@ -160,8 +160,8 @@
       "home": "https://airportsc.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": null
     },
@@ -174,8 +174,8 @@
       "home": "https://airsecure.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 4,
       "error": null
     },
@@ -188,8 +188,8 @@
       "home": "https://www.korailtech.com/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 6,
       "error": null
     },
@@ -202,8 +202,8 @@
       "home": "https://www.korailnetworks.com/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": null
     },
@@ -216,8 +216,8 @@
       "home": "https://www.kdbbiz.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": null
     },
@@ -230,9 +230,9 @@
       "home": "https://www.ibkservice.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
-      "found": 2,
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
+      "found": 4,
       "error": null
     },
     {
@@ -244,9 +244,9 @@
       "home": "https://www.kohom.or.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
-      "found": 5,
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
+      "found": 6,
       "error": null
     },
     {
@@ -258,8 +258,8 @@
       "home": "https://www.exservice.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 16,
       "error": null
     },
@@ -272,8 +272,8 @@
       "home": "http://www.ktopartners.com/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 14,
       "error": null
     },
@@ -286,8 +286,8 @@
       "home": "https://www.gklwith.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": null
     },
@@ -300,8 +300,8 @@
       "home": "https://www.sbfm.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 2,
       "error": null
     },
@@ -314,8 +314,8 @@
       "home": "https://www.kibomate.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 3,
       "error": null
     },
@@ -328,8 +328,8 @@
       "home": "http://lxp.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": null
     },
@@ -342,8 +342,8 @@
       "home": "http://kicoxp.com/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": null
     },
@@ -356,8 +356,8 @@
       "home": "https://www.kwateromc.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": null
     },
@@ -370,8 +370,8 @@
       "home": "https://koworks.org/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 0,
       "error": null
     },
@@ -384,8 +384,8 @@
       "home": "https://kbsbiz.co.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 1,
       "error": null
     },
@@ -398,8 +398,8 @@
       "home": "https://poma.hrdms.kr/#/recruitment/list",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 1,
       "error": null
     },
@@ -412,8 +412,8 @@
       "home": "https://www.swr.or.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 4,
       "error": null
     },
@@ -426,13 +426,64 @@
       "home": "https://www.insiseol.or.kr/",
       "ok": true,
       "health": "healthy",
-      "last_checked": "2026-11-06T01:30:13Z",
-      "last_success": "2026-11-06T01:30:13Z",
+      "last_checked": "2026-11-07T00:52:45Z",
+      "last_success": "2026-11-07T00:52:45Z",
       "found": 8,
       "error": null
     }
   ],
   "jobs": [
+    {
+      "id": "182ccc423ce53990307df0fc",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "IBK서비스 경비직종 계약직 신규채용 (IBK기업은행 언주로)",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2625",
+      "score": 5,
+      "tags": [
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-11-07T00:52:45Z",
+      "last_seen": "2026-11-07T00:52:45Z",
+      "baseline": false,
+      "active": true
+    },
+    {
+      "id": "a8a5a16733115c4affeb1f99",
+      "source_id": "ibk-service",
+      "company": "IBK서비스",
+      "priority": 16,
+      "title": "IBK서비스 경비직종 계약직 신규채용 (IBK기업은행 과천)",
+      "url": "https://www.ibkservice.co.kr/recruit/notice/2624",
+      "score": 9,
+      "tags": [
+        "수도권",
+        "관심직무",
+        "전환친화"
+      ],
+      "first_seen": "2026-11-07T00:52:45Z",
+      "last_seen": "2026-11-07T00:52:45Z",
+      "baseline": false,
+      "active": true
+    },
+    {
+      "id": "1268be50cf3bdc0b841a90d2",
+      "source_id": "kohom",
+      "company": "주택관리공단",
+      "priority": 17,
+      "title": "주택관리공단 강원지사 채용형 인턴(행정직)채용공고_긴급(화천권)",
+      "url": "https://www.kohom.or.kr/web/mainComm/HM005008005.do?mode=list&schCon=0",
+      "score": 2,
+      "tags": [
+        "전환친화"
+      ],
+      "first_seen": "2026-11-07T00:52:45Z",
+      "last_seen": "2026-11-07T00:52:45Z",
+      "baseline": false,
+      "active": true
+    },
     {
       "id": "abbc98a46229f964ccf0fcc4",
       "source_id": "lh-es",
@@ -446,7 +497,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -463,7 +514,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -479,7 +530,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -495,7 +546,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -511,7 +562,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -527,7 +578,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -543,7 +594,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -559,7 +610,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -575,7 +626,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -591,7 +642,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -607,7 +658,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -623,7 +674,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -639,7 +690,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -656,7 +707,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -673,7 +724,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -690,7 +741,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -707,7 +758,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-06T01:30:13Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -723,7 +774,7 @@
         "관심직무"
       ],
       "first_seen": "2026-11-05T01:26:32Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -739,7 +790,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-04T01:17:56Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -756,7 +807,7 @@
         "관심직무"
       ],
       "first_seen": "2026-11-04T01:17:56Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -772,7 +823,7 @@
         "관심직무"
       ],
       "first_seen": "2026-11-04T01:17:56Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -789,7 +840,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-04T01:17:56Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -803,7 +854,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-11-04T01:17:56Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -820,7 +871,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-03T02:53:18Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -836,7 +887,7 @@
         "관심직무"
       ],
       "first_seen": "2026-11-03T02:53:18Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -852,7 +903,7 @@
         "수도권"
       ],
       "first_seen": "2026-11-03T02:53:18Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -869,7 +920,7 @@
         "관심직무"
       ],
       "first_seen": "2026-11-02T00:38:09Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -885,7 +936,7 @@
         "전환친화"
       ],
       "first_seen": "2026-11-02T00:38:09Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -903,7 +954,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-31T00:43:18Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -917,7 +968,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-10-31T00:43:18Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -933,7 +984,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-30T00:53:54Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -947,7 +998,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-10-30T00:53:54Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -961,7 +1012,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-10-30T00:53:54Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1044,7 +1095,7 @@
         "관심직무"
       ],
       "first_seen": "2026-10-28T00:28:45Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1111,7 +1162,7 @@
         "관심직무"
       ],
       "first_seen": "2026-10-27T00:23:27Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1128,7 +1179,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-23T23:50:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1145,7 +1196,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-23T23:50:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1161,7 +1212,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-23T23:50:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1177,7 +1228,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-23T23:50:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1226,7 +1277,7 @@
         "관심직무"
       ],
       "first_seen": "2026-10-21T23:59:09Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1259,7 +1310,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-20T00:17:33Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1276,7 +1327,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-20T00:17:33Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1337,7 +1388,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-10-20T00:17:33Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1353,7 +1404,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-15T23:39:49Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1445,7 +1496,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-13T02:33:18Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1578,7 +1629,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-08T00:57:09Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1594,7 +1645,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-07T00:38:53Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1610,7 +1661,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-07T00:38:53Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1626,7 +1677,7 @@
         "전환친화"
       ],
       "first_seen": "2026-10-06T01:44:37Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1867,7 +1918,7 @@
         "전환친화"
       ],
       "first_seen": "2026-09-23T23:39:03Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1901,7 +1952,7 @@
         "전환친화"
       ],
       "first_seen": "2026-09-22T23:35:28Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -1931,7 +1982,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-09-22T23:35:28Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -2003,7 +2054,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-09-17T23:32:18Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -2019,7 +2070,7 @@
         "전환친화"
       ],
       "first_seen": "2026-09-17T23:32:18Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -2061,7 +2112,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-09-16T23:38:24Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -2153,7 +2204,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-09-11T23:13:21Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -2264,7 +2315,7 @@
         "전환친화"
       ],
       "first_seen": "2026-09-09T23:12:18Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -3185,7 +3236,7 @@
         "전환친화"
       ],
       "first_seen": "2026-08-05T22:18:46Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -3201,7 +3252,7 @@
         "전환친화"
       ],
       "first_seen": "2026-08-05T22:18:46Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -3215,7 +3266,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-08-05T22:18:46Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -3311,7 +3362,7 @@
         "전환친화"
       ],
       "first_seen": "2026-08-03T22:16:18Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -3411,7 +3462,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-31T22:14:33Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -3444,7 +3495,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-30T22:17:01Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -3537,7 +3588,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-27T22:16:19Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -3553,7 +3604,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-27T22:16:19Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -3821,7 +3872,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-23T22:12:47Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -3903,7 +3954,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-22T22:14:59Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": false,
       "active": true
     },
@@ -4268,7 +4319,7 @@
         "관심직무"
       ],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4285,7 +4336,7 @@
         "관심직무"
       ],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4299,7 +4350,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4315,7 +4366,7 @@
         "관심직무"
       ],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4331,7 +4382,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4345,7 +4396,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4359,7 +4410,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4375,7 +4426,7 @@
         "관심직무"
       ],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4392,7 +4443,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4409,7 +4460,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4423,7 +4474,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4437,7 +4488,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T13:24:22Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4483,7 +4534,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4499,7 +4550,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4516,7 +4567,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4533,7 +4584,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4549,7 +4600,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4566,7 +4617,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4836,7 +4887,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4852,7 +4903,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4868,7 +4919,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4884,7 +4935,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4898,7 +4949,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4915,7 +4966,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -4931,7 +4982,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5074,7 +5125,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5090,7 +5141,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5106,7 +5157,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5122,7 +5173,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5138,7 +5189,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5154,7 +5205,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5170,7 +5221,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5184,7 +5235,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5200,7 +5251,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5214,7 +5265,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5230,7 +5281,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5246,7 +5297,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5262,7 +5313,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5278,7 +5329,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5294,7 +5345,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5310,7 +5361,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5324,7 +5375,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5340,7 +5391,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5356,7 +5407,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5370,7 +5421,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5386,7 +5437,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5402,7 +5453,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5416,7 +5467,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5432,7 +5483,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5448,7 +5499,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5464,7 +5515,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5595,7 +5646,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5612,7 +5663,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5628,7 +5679,7 @@
         "관심직무"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5644,7 +5695,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -5658,7 +5709,7 @@
       "score": 0,
       "tags": [],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -6132,7 +6183,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -6148,7 +6199,7 @@
         "관심직무"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -6164,7 +6215,7 @@
         "관심직무"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -6180,7 +6231,7 @@
         "관심직무"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -6244,7 +6295,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -6260,7 +6311,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
@@ -6651,7 +6702,7 @@
         "전환친화"
       ],
       "first_seen": "2026-07-20T01:35:34Z",
-      "last_seen": "2026-11-06T01:30:13Z",
+      "last_seen": "2026-11-07T00:52:45Z",
       "baseline": true,
       "active": true
     },
